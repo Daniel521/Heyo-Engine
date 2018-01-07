@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Heyo">
+      <UniqueIdentifier>{08df0d6e-45fa-4ee9-8393-d0ebc82c70fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Heyo">
+      <UniqueIdentifier>{df46a201-103b-43b6-9c46-d6bee8d2b202}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Heyo\h_Character.cpp">
+      <Filter>Source Files\Heyo</Filter>
+    </ClCompile>
+    <ClCompile Include="Heyo\h_Event.cpp">
+      <Filter>Source Files\Heyo</Filter>
+    </ClCompile>
+    <ClCompile Include="Heyo\h_Graphics.cpp">
+      <Filter>Source Files\Heyo</Filter>
+    </ClCompile>
+    <ClCompile Include="Heyo\h_heyo.cpp">
+      <Filter>Source Files\Heyo</Filter>
+    </ClCompile>
+    <ClCompile Include="Heyo\h_Image.cpp">
+      <Filter>Source Files\Heyo</Filter>
+    </ClCompile>
+    <ClCompile Include="Heyo\h_LTimer.cpp">
+      <Filter>Source Files\Heyo</Filter>
+    </ClCompile>
+    <ClCompile Include="Heyo\h_Sound.cpp">
+      <Filter>Source Files\Heyo</Filter>
+    </ClCompile>
+    <ClCompile Include="Heyo\h_Sprite.cpp">
+      <Filter>Source Files\Heyo</Filter>
+    </ClCompile>
+    <ClCompile Include="Heyo\h_Text.cpp">
+      <Filter>Source Files\Heyo</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Heyo\h_Character.h">
+      <Filter>Header Files\Heyo</Filter>
+    </ClInclude>
+    <ClInclude Include="Heyo\h_Event.h">
+      <Filter>Header Files\Heyo</Filter>
+    </ClInclude>
+    <ClInclude Include="Heyo\h_Graphics.h">
+      <Filter>Header Files\Heyo</Filter>
+    </ClInclude>
+    <ClInclude Include="Heyo\h_heyo.h">
+      <Filter>Header Files\Heyo</Filter>
+    </ClInclude>
+    <ClInclude Include="Heyo\h_Image.h">
+      <Filter>Header Files\Heyo</Filter>
+    </ClInclude>
+    <ClInclude Include="Heyo\h_LTimer.h">
+      <Filter>Header Files\Heyo</Filter>
+    </ClInclude>
+    <ClInclude Include="Heyo\h_Sound.h">
+      <Filter>Header Files\Heyo</Filter>
+    </ClInclude>
+    <ClInclude Include="Heyo\h_Sprite.h">
+      <Filter>Header Files\Heyo</Filter>
+    </ClInclude>
+    <ClInclude Include="Heyo\h_Text.h">
+      <Filter>Header Files\Heyo</Filter>
+    </ClInclude>
+    <ClInclude Include="Heyo\HeyoEngine.h">
+      <Filter>Header Files\Heyo</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Heyo\ReadMe.txt" />
+  </ItemGroup>
+</Project>
