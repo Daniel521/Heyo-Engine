@@ -281,6 +281,7 @@ namespace Heyo {
 		KEYUP = SDL_KEYUP
 	};
 
+	// this handles all of the events/inputs form the user
 	class Events 
 	{
 	public:
@@ -338,6 +339,10 @@ namespace Heyo {
 		// else returns false to keep going
 		bool exit() { return is_exit; }
 
+		// DO NOT CALL THIS FUNCTION UNLESS YOU KNOW WHAT YOU"RE DOING
+		// Call the loop function in Heyo::Engine instead of this one
+		// this one is left here for debugging, don't touch it please,
+		// it will screw you over.
 		bool loop();
 
 		void clear();

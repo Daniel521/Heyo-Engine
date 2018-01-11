@@ -31,6 +31,8 @@ public:
 	EngineClass(unsigned int width, unsigned int height, std::string title);
 	~EngineClass();
 
+	bool loop();
+
 	bool init(unsigned int width, unsigned int height, std::string title);
 	void close();
 

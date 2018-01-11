@@ -80,6 +80,14 @@ EngineClass::~EngineClass()
 	close();
 }
 
+bool EngineClass::loop()
+{
+	timer->getTicks();
+	timer->start();
+
+	return input->loop();
+}
+
 bool EngineClass::init(unsigned int width, unsigned int height, std::string title)
 {
 	if (graphics != NULL)
@@ -126,15 +134,3 @@ void EngineClass::close()
 		timer = NULL;
 	}
 }
-
-
-
-
-//void HeyoEngine::addSprite(string title, string imgaddress, int indiWidth, int indiHeight)
-//{
-//	std::pair<string, Heyo::Sprite> temp;
-//	temp.first = title;
-//	temp.second.init(graphics);
-//	temp.second.loadSprite(imgaddress, indiWidth, indiHeight);
-//	sprites.insert(temp);
-//}

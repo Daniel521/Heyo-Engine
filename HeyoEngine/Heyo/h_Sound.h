@@ -113,8 +113,7 @@ namespace Heyo {
 		
 		// soundeffect_num == -1, then fade out all channels
 		void stop(int soundeffect_num = -1, int ms = 0);
-
-		int getnumSoundEffects() { return sounds.size(); }
+		int getnumSoundEffects() { return static_cast<int>(sounds.size()); }
 
 		// get the sound effect number,
 		// address : pass in the address of the soundeffect

@@ -16,12 +16,14 @@
 
 // Used to determine how far a certain
 // animation goes in a sprite
-struct range {
-	int min;
-	int max;
-};
 
 namespace Heyo {
+
+	struct Range 
+	{
+		int min;
+		int max;
+	};
 
 	class Graphics;
 

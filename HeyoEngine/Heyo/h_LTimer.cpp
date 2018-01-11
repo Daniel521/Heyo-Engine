@@ -71,7 +71,8 @@ namespace Heyo {
 	Uint32 LTimer::getTicks()
 	{
 		//The actual timer time
-		Uint32 time = 0;
+		time = 0;
+		seconds = 0.0f;
 
 		//If the timer is running
 		if (mStarted)
@@ -80,12 +81,12 @@ namespace Heyo {
 			if (mPaused)
 			{
 				//Return the number of ticks when the timer was paused
-				time = mPausedTicks;
+				seconds = (time = mPausedTicks) / 1000.0f;
 			}
 			else
 			{
 				//Return the current time minus the start time
-				time = SDL_GetTicks() - mStartTicks;
+				seconds = (time = SDL_GetTicks() - mStartTicks) / 1000.0f;
 			}
 		}
 

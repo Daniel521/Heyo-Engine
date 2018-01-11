@@ -7,6 +7,7 @@
 #include <string>
 #include "h_Image.h"
 #include "h_Sprite.h"
+#include "h_Text.h"
 
 
 namespace Heyo {

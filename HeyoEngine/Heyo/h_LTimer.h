@@ -22,6 +22,8 @@ namespace Heyo {
 		void unpause();
 
 		//Gets the timer's time
+		Uint32 time;
+		float seconds;
 		Uint32 getTicks();
 
 		//Checks the status of the timer
