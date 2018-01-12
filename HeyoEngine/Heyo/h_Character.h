@@ -7,70 +7,83 @@
 
 
 // Classes used to make characters for a platform game, idk how to spell
-namespace HeyoPlat
+
+class Character
 {
+public:
+	Heyo::Sprite * sprite;
+	// sprite_rect w/ respect to the screen, NOT THE MAP!
+	Heyo::Rect sprite_rect;
 
-	class Character
-	{
-	public:
-		Heyo::Sprite * sprite;
-		// sprite_rect w/ respect to the screen, NOT THE MAP!
-		Heyo::Rect sprite_rect;
+	int curr_frame;
+	float y_curr_speed;
+	float x;
+	float y;
+	float x_speed;
+	float y_speed;
+	bool jumping;
+	int width;
+	int height;
+	Heyo::Range spr_range_idle;
+	Heyo::Range spr_range_move;
+	Heyo::Range spr_range_jump;
 
-		int curr_frame;
-		float y_curr_speed;
+public:
+	Character();
+	~Character();
 
-	public:
-		float x;
-		float y;
-		float x_speed;
-		float y_speed;
-		bool is_jumping;
-		int width;
-		int height;
-		Heyo::Range spr_range_idle;
-		Heyo::Range spr_range_moveLeft;
-		Heyo::Range spr_range_moveRight;
-		Heyo::Range spr_range_jump;
+	// - Loads a sprite from the specified addresss, ex: Data/Sprite/greg.png
+	// - Only loads png for now
+	// - indiWidth and indiHeight specifies the width and height of each
+	//	individual sprite in the whole spritesheet, leave as -1 to cover the
+	//	whole width or height.
+	bool loadSprite(std::string addresss, int indiWidth = -1, int indiHeight = -1);
 
-	public:
-		Character();
-		~Character();
+	// Specifies the current frame of the sprite
+	//Uint32 getCurrentFrame();
 
-		// - Loads a sprite from the specified addresss, ex: Data/Sprite/greg.png
-		// - Only loads png for now
-		// - indiWidth and indiHeight specifies the width and height of each
-		//	individual sprite in the whole spritesheet, leave as -1 to cover the
-		//	whole width or height.
-		bool loadSprite(std::string addresss, int indiWidth = -1, int indiHeight = -1);
+	void update();
 
-		// Specifies the current frame of the sprite
-		//Uint32 getCurrentFrame();
+	void moveLeft();
 
-		void update();
+	void moveRight();
 
-		void moveLeft();
+	void jump();
 
-		void moveRight();
+	void setX(float x);
 
-		void jump();
+	void setY(float y);
 
-		void setX(int x) { this->x = x; }
+	float getX();
 
-	private:
+	float getY();
 
-		void jumpUpdate();
+	void setX_Speed(float x_speed);
 
-		//void idleAnim();
+	void setY_Speed(float y_speed);
+
+	float getX_Speed();
+
+	float getY_Speed();
+
+	void setIdleRange(Heyo::Range range);
+
+	void setMoveRange(Heyo::Range range);
+
+	void setJumpRange(Heyo::Range range);
+
+	bool isJumping();
+
+private:
+
+	void jumpUpdate();
+
+	//void idleAnim();
 	
-		//void moveLeftAnim();
+	//void moveLeftAnim();
 
-		//void moveRightAnim();
+	//void moveRightAnim();
 
-		//void jumpAnim();
+	//void jumpAnim();
 
-	};
-
-}
-
-
+};

@@ -3,28 +3,38 @@
 #include <iostream>
 using namespace std;
 
-namespace HeyoPlat 
-{
 
+	Character::Character()
+		//sprite(NULL),
+		//sprite_rect({ 0,0,0,0 }),
+		//curr_frame(0),
+		//x(0),
+		//y(0),
+		//x_speed(100.0f),
+		//y_speed(100.0f),
+		//is_jumping(false),
+		//width(20),
+		//height(20),
+		//spr_range_idle({ -1,-1 }),
+		//spr_range_moveLeft({ -1,-1 }),
+		//spr_range_moveRight({ -1,-1 }),
+		//spr_range_jump({-1,-1})
+	{
+		sprite = NULL;
+		sprite_rect = { 0,0,0,0 };
+		curr_frame = 0;
+		x = 0;
+		y = 0;
+		x_speed = 100.0f;
+		y_speed = 100.0f;
+		jumping = false;
+		width = 20;
+		height = 20;
+		spr_range_idle = { -1,0 };
+		spr_range_move = { -1,0 };
+		spr_range_jump = { -1,0 };
 
-
-
-	Character::Character() :
-		sprite(NULL),
-		sprite_rect({ 0,0,0,0 }),
-		curr_frame(0),
-		x(0),
-		y(0),
-		x_speed(100.0f),
-		y_speed(100.0f),
-		is_jumping(false),
-		width(20),
-		height(20),
-		spr_range_idle({ -1,-1 }),
-		spr_range_moveLeft({ -1,-1 }),
-		spr_range_moveRight({ -1,-1 }),
-		spr_range_jump({-1,-1})
-	{	}
+	}
 
 	Character::~Character()
 	{
@@ -89,7 +99,7 @@ namespace HeyoPlat
 			sprite->flipHor();
 		}
 		x -= x_speed * Heyo::Engine->timer->seconds;
-		sprite_rect.x = static_cast<int>(x);
+		//sprite_rect.x = static_cast<int>(x);
 	}
 
 	void Character::moveRight()
@@ -105,8 +115,68 @@ namespace HeyoPlat
 	void Character::jump()
 	{
 		y_curr_speed = y_speed;
-		is_jumping = true;
+		jumping = true;
 		// $$FALL SOUND
+	}
+
+	void Character::setX(float x)
+	{
+		this->x = x;
+	}
+
+	void Character::setY(float y)
+	{
+		this->y = y;
+	}
+
+	float Character::getX()
+	{
+		return x;
+	}
+
+	float Character::getY()
+	{
+		return y;
+	}
+
+	void Character::setX_Speed(float x_speed)
+	{
+		this->x_speed = x_speed;
+	}
+
+	void Character::setY_Speed(float y_speed)
+	{
+		this->y_speed = y_speed;
+	}
+
+	float Character::getX_Speed()
+	{
+		return x_speed;
+	}
+
+	float Character::getY_Speed()
+	{
+		return y_speed;
+	}
+
+	void Character::setIdleRange(Heyo::Range range)
+	{
+		this->spr_range_idle = range;
+	}
+
+	void Character::setMoveRange(Heyo::Range range)
+	{
+		this->spr_range_move = range;
+	}
+
+	void Character::setJumpRange(Heyo::Range range)
+	{
+		this->spr_range_jump = range;
+	}
+
+	bool Character::isJumping()
+	{
+		return jumping;
 	}
 
 	void Character::jumpUpdate()
@@ -118,12 +188,6 @@ namespace HeyoPlat
 		{
 			y = 0;
 			y_curr_speed = 0;
-			is_jumping = false;
-			//curr_frame_jump = sp_greg_jump.min;
-			//Heyo::Engine->sound->play(sound_land);
+			jumping = false;
 		}
 	}
-
-
-
-}
