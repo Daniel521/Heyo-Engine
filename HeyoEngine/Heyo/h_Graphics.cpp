@@ -127,10 +127,10 @@ namespace Heyo {
 		double width = p_text.getWidth() / 2.0;
 		double height = p_text.getHeight() / 2.0;
 		Rect dest;
-		dest.x =  center.x - (width)*source_mult;
-		dest.w = center.x + (width)*source_mult - dest.x;
-		dest.y = center.y - (height)*source_mult;
-		dest.h = center.y + (height)*source_mult - dest.y;
+		dest.x =  static_cast<int>(center.x - (width)*source_mult);
+		dest.w = static_cast<int>(center.x + (width)*source_mult - dest.x);
+		dest.y = static_cast<int>(center.y - (height)*source_mult);
+		dest.h = static_cast<int>(center.y + (height)*source_mult - dest.y);
 
 		if (SDL_RenderCopyEx(m_renderer, p_text.m_texture, NULL, &dest, p_text.getAngle(), NULL, p_text.flipped) != 0)
 		{

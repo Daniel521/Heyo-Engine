@@ -139,7 +139,7 @@ namespace Heyo {
 			is_exit = true;
 			return false;
 		}
-		if (SDL_PollEvent(&m_event.m_event) == true)
+		if (SDL_PollEvent(&m_event.m_event) != 0)
 		{
 			for (std::list<Key>::iterator i = m_keylist.begin(); i != m_keylist.end(); i++)
 			{
@@ -192,7 +192,7 @@ namespace Heyo {
 
 	int Events::getSize()
 	{
-		return m_keylist.size();
+		return static_cast<int>(m_keylist.size());
 	}
 
 }

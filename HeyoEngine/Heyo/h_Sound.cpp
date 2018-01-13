@@ -83,14 +83,14 @@ namespace Heyo {
 
 	void SoundPlayer::pop_back()
 	{
-		Mix_HaltGroup(sounds.size() - 1);
+		Mix_HaltGroup(static_cast<int>(sounds.size()) - 1);
 		sounds.rbegin()->clear();
 		sounds.pop_back();
 	}
 
 	int SoundPlayer::addSoundEffect(string address)
 	{
-		int group = sounds.size();
+		int group = static_cast<int>(sounds.size());
 		int first = group*CHANNELS_PER_SOUNDEFFECT;
 
 		Mix_GroupChannels(first, first + CHANNELS_PER_SOUNDEFFECT - 1, group);
@@ -172,7 +172,7 @@ namespace Heyo {
 
 	void SoundEffect::play(int volume, int ms)
 	{
-		volume = (volume * m_Max_Volume * 128.0) / 10000 ;
+		volume = static_cast<int>((volume * m_Max_Volume * 128.0) / 10000) ;
 		Mix_Volume(m_nextChan, volume);
 
 		m_nextChan = Mix_FadeInChannel(m_nextChan, m_chunk, 0, ms);

@@ -70,9 +70,9 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\Users\Daniel\OneDrive\Programming\C++\LibAndIncludes\SDL2\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Daniel\OneDrive\Programming\C++\LibAndIncludes\SDL2\lib;$(LibraryPath)</LibraryPath>
-    <OutDir>..\..\..\LibAndIncludes\HeyoEngine\lib</OutDir>
+    <IncludePath>C:\Users\Daniel\Dropbox %28CSU Fullerton%29\Programming\C++\LibAndIncludes\SDL2\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Daniel\Dropbox %28CSU Fullerton%29\Programming\C++\LibAndIncludes\SDL2\lib;$(LibraryPath)</LibraryPath>
+    <OutDir>..\..\..\..\LibAndIncludes\HeyoEngine\lib</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
