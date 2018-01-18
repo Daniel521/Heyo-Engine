@@ -125,6 +125,8 @@
     <ClCompile Include="Heyo\h_Graphics.cpp" />
     <ClCompile Include="Heyo\h_heyo.cpp" />
     <ClCompile Include="Heyo\h_Image.cpp" />
+    <ClCompile Include="Heyo\h_Level.cpp" />
+    <ClCompile Include="Heyo\h_Map.cpp" />
     <ClCompile Include="Heyo\h_LTimer.cpp" />
     <ClCompile Include="Heyo\h_Sound.cpp" />
     <ClCompile Include="Heyo\h_Sprite.cpp" />
@@ -137,6 +139,8 @@
     <ClInclude Include="Heyo\h_Graphics.h" />
     <ClInclude Include="Heyo\h_heyo.h" />
     <ClInclude Include="Heyo\h_Image.h" />
+    <ClInclude Include="Heyo\h_Level.h" />
+    <ClInclude Include="Heyo\h_Map.h" />
     <ClInclude Include="Heyo\h_LTimer.h" />
     <ClInclude Include="Heyo\h_Sound.h" />
     <ClInclude Include="Heyo\h_Sprite.h" />

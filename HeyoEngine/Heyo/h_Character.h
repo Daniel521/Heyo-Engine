@@ -7,10 +7,21 @@
 
 namespace Heyo_Platform
 {
+	class Map;
 	// Classes used to make characters for a platform game, idk how to spell
+
+
 
 	class Character
 	{
+	public:
+		enum CollisionLabel
+		{
+			none = 0,
+			onLeft = 1,
+			onRight = 2,
+			onTop = 3
+		};
 	public:
 
 		Heyo::Sprite * sprite;
@@ -19,6 +30,8 @@ namespace Heyo_Platform
 		// 0. idle, 1. walk, 2. jump, 3. die
 		float anim_period[4];
 		short curr_frame;
+
+		unsigned char collision;
 
 		Heyo::Rect spr_rect;
 
@@ -47,6 +60,9 @@ namespace Heyo_Platform
 
 		void draw(bool show_box = false);
 		void update();
+
+		// Checks if it collided with a collision
+		bool checkMapCollision(Map & map);
 
 	public:
 		// Mutators and Accessors

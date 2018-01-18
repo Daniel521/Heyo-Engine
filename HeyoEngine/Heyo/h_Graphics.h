@@ -62,6 +62,9 @@ namespace Heyo {
 		void update(Image & p_image, Rect & source, Rect & destin);
 		void update(Image & p_image, Point & destin);
 
+		int getScreenWidth();
+		int getScreenHeight();
+
 		void render();
 
 	private:

@@ -1,6 +1,8 @@
 #include "h_Character.h"
 #include "h_heyo.h"
+#include "h_Map.h"
 #include <iostream>
+
 using namespace std;
 
 #define gravity 70
@@ -29,6 +31,7 @@ namespace Heyo_Platform
 		jump_speed = 22;
 		jumping = false;
 		walking = 0;
+		collision = 0;
 	}
 
 	Character::~Character()
@@ -91,7 +94,8 @@ namespace Heyo_Platform
 
 	void Character::update()
 	{
-		if (jumping == true || y != 0)
+		if ((jumping == true || y != 0) && (collision != onTop || y_speed > 0)
+			)
 		{
 			jumpAnim();
 			jumpUpdate();
@@ -118,6 +122,38 @@ namespace Heyo_Platform
 		walking = 0;
 		spr_rect.x = static_cast<int>(x);
 		spr_rect.y = static_cast<int>(ground - spr_rect.h - y);
+	}
+
+	bool Character::checkMapCollision(Map & map)
+	{
+		Heyo::Rect collide;
+
+		for (std::vector<Heyo::Rect>::iterator i = map.coll_rect.begin(); i != map.coll_rect.end(); i++)
+		{
+			if (SDL_IntersectRect(&*i, &spr_rect, &collide) == true)
+			{
+				if (collide.w > collide.h)
+				{
+					collision = onTop;
+					cout << "Collision on top" << endl;
+					return true;
+				}
+				else if (collide.x == i->x)
+				{
+					collision = onRight;
+					cout << "Collision on right" << endl;
+					return true;
+				}
+				else
+				{
+					collision = onLeft;
+					cout << "Collision on left" << endl;
+					return true;
+				}
+			}
+		}
+		collision = none;
+		return false;
 	}
 
 	void Character::setIdleAnim(int first, int last)

@@ -156,6 +156,16 @@ namespace Heyo {
 
 		SDL_RenderCopyEx(m_renderer, p_image.m_texture, NULL, &temp, p_image.getAngle(), NULL, p_image.flipped);
 	}
+
+	int Graphics::getScreenWidth()
+	{
+		return *SCREEN_WIDTH;
+	}
+
+	int Graphics::getScreenHeight()
+	{
+		return *SCREEN_HEIGHT;
+	}
 	
 	// renders everything to the screen
 	void Graphics::render()
