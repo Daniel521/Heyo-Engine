@@ -31,7 +31,7 @@ namespace Heyo_Platform
 		jump_speed = 22;
 		jumping = false;
 		walking = 0;
-		collision = 0;
+		coll_side = 0;
 	}
 
 	Character::~Character()
@@ -59,8 +59,11 @@ namespace Heyo_Platform
 		{
 			sprite->flipHor();
 		}
-		x -= x_speed * Heyo::Engine->timer->seconds;
-		walking = 1;
+		if (coll_side != onLeft)
+		{
+			x -= x_speed * Heyo::Engine->timer->seconds;
+			walking = 1;
+		}
 	}
 
 	void Character::moveRight()
@@ -69,8 +72,11 @@ namespace Heyo_Platform
 		{
 			sprite->flipHor();
 		}
-		x += x_speed * Heyo::Engine->timer->seconds;
-		walking = 2;
+		if (coll_side != onRight)
+		{
+			x += x_speed * Heyo::Engine->timer->seconds;
+			walking = 2;
+		}
 	}
 
 	void Character::jump()
@@ -94,7 +100,7 @@ namespace Heyo_Platform
 
 	void Character::update()
 	{
-		if ((jumping == true || y != 0) && (collision != onTop || y_speed > 0)
+		if ((jumping == true || y != 0) && (coll_top != onBot || y_speed > 0)
 			)
 		{
 			jumpAnim();
@@ -128,31 +134,71 @@ namespace Heyo_Platform
 	{
 		Heyo::Rect collide;
 
-		for (std::vector<Heyo::Rect>::iterator i = map.coll_rect.begin(); i != map.coll_rect.end(); i++)
+		for (std::vector<Heyo::Rect>::iterator i = map.coll_list.begin(); i != map.coll_list.end(); i++)
 		{
 			if (SDL_IntersectRect(&*i, &spr_rect, &collide) == true)
 			{
-				if (collide.w > collide.h)
+				//if (collide.w >= collide.h)
+				//{
+				//	if (collide.y == i->y)
+				//	{
+				//		coll_top = onBot;
+				//		setY(ground - collide.y - 1);
+				//		cout << "Collision on bot" << endl;
+				//	}
+				//	else
+				//	{
+				//		coll_top = onTop;
+				//		setY(ground - i->y - i->h - getHeight());
+				//		cout << "Collision on top" << endl;
+				//	}
+				//}
+				//else
+				//{
+				//	if (collide.x == i->x)
+				//	{
+				//		coll_side = onRight;
+				//		setX(collide.x - getWidth() + 1);
+				//		cout << "Collision on right" << endl;
+				//	}
+				//	else
+				//	{
+				//		coll_side = onLeft;
+				//		setX(collide.x + collide.w);
+				//		cout << "Collision on left" << endl;
+				//	}
+				//}
+				//return true;
+				if (collide.y == i->y)
 				{
-					collision = onTop;
-					cout << "Collision on top" << endl;
-					return true;
+					// Bot
+					coll_top = onBot;
+					setY(ground - collide.y - 1);
+					cout << "Bot" << endl;
 				}
-				else if (collide.x == i->x)
+				else if (collide.y + collide.h == i->y + i->h)
 				{
-					collision = onRight;
-					cout << "Collision on right" << endl;
-					return true;
+					// Top
+					coll_top = onTop;
+					cout << "Top" << endl;
 				}
-				else
+				if (collide.x == i->x)
 				{
-					collision = onLeft;
-					cout << "Collision on left" << endl;
-					return true;
+					// Right
+					coll_side = onRight;
+					cout << "Right" << endl;
 				}
+				else if ((collide.x + collide.w) == (i->x + i->w))
+				{
+					// Left
+					coll_side = onLeft;
+					cout << "Left" << endl;
+				}
+				return true;
 			}
 		}
-		collision = none;
+		coll_side = none;
+		coll_top = none;
 		return false;
 	}
 
@@ -272,6 +318,10 @@ namespace Heyo_Platform
 
 	void Character::jumpUpdate()
 	{
+		if (coll_top == onTop)
+		{
+			y_speed = 0;
+		}
 		y_speed -= gravity * Heyo::Engine->timer->seconds;
 		y += y_speed;
 		if (y <= 0)

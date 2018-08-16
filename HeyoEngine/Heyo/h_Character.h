@@ -15,14 +15,18 @@ namespace Heyo_Platform
 	class Character
 	{
 	public:
-		enum CollisionLabel
+		enum CollisionSide
 		{
 			none = 0,
 			onLeft = 1,
-			onRight = 2,
-			onTop = 3
+			onRight = 2
 		};
-	public:
+		enum CollisionTop
+		{
+			onTop = 1,
+			onBot = 2
+		};
+	private:
 
 		Heyo::Sprite * sprite;
 		// 0. idle, 1. walk, 2. jump, 3. die
@@ -31,7 +35,9 @@ namespace Heyo_Platform
 		float anim_period[4];
 		short curr_frame;
 
-		unsigned char collision;
+		unsigned char coll_side;
+		unsigned char coll_top;
+		unsigned int coll_point;
 
 		Heyo::Rect spr_rect;
 
@@ -57,8 +63,10 @@ namespace Heyo_Platform
 		void moveLeft();
 		void moveRight();
 		void jump();
-
+		
+		// draws the sprite
 		void draw(bool show_box = false);
+		// updates the kinematics of the character
 		void update();
 
 		// Checks if it collided with a collision
@@ -120,5 +128,4 @@ namespace Heyo_Platform
 		void walkAnim();
 
 	};
-
 }

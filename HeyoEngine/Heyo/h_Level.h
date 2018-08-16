@@ -14,14 +14,18 @@ namespace Heyo_Platform
 
 	class Level
 	{
+	private:
+		Map map;
+		Character character;
 	public:
-		Map * map;
+		Level();
+		~Level();
 
-	public:
+		// Update game logic
+		void update();
 
-		
-	public:
-
+		// Draw sprites
+		void draw();
 
 	};
 }

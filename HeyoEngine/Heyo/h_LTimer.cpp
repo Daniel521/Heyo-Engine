@@ -105,5 +105,4 @@ namespace Heyo {
 		return mPaused && mStarted;
 	}
 
-
 }

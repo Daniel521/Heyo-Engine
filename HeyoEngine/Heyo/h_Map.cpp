@@ -1,10 +1,10 @@
 #include "h_Map.h"
 #include "h_heyo.h"
 #include <fstream>
+#include <iostream>
 
 namespace Heyo_Platform
 {
-
 	Map::Map()
 	{
 		background = NULL;
@@ -54,12 +54,33 @@ namespace Heyo_Platform
 			return false;
 		}
 
+		string coll_type;
+		string name;
 		char end_line;
 		while (read.eof() == false && read.peek() != EOF)
 		{
+			read >> coll_type;
+			if (coll_type == "coll:")
+			{
 			read >> rect.x >> rect.y >> rect.w >> rect.h;
 			read.get(end_line);
-			coll_rect.push_back(rect);
+			coll_list.push_back(rect);
+			}
+			else if (coll_type == "spawn:")
+			{
+				Spawn t_spawn;
+				read >> t_spawn.name;
+				read >> t_spawn.point.x >> t_spawn.point.y;
+				read.get(end_line);
+				spawn_list.push_back(t_spawn);
+			}
+			else if (coll_type == "enc:")
+			{
+				read >> name;
+				read >> rect.x >> rect.y >> rect.w >> rect.h;
+				read.get(end_line);
+				enc_list.push_back({rect,name});
+			}
 		}
 
 		read.close();
@@ -87,8 +108,10 @@ namespace Heyo_Platform
 
 	void Map::draw()
 	{
-		Heyo::Engine->graphics->update(*background, rect_background);
-		Heyo::Engine->graphics->update(*mainground, rect_mainground);
+		if (background != NULL)
+			Heyo::Engine->graphics->update(*background, rect_background);
+		if (mainground != NULL)
+			Heyo::Engine->graphics->update(*mainground, rect_mainground);
 	}
 
 	void Map::setMaingoundHeight(int height)
@@ -110,5 +133,4 @@ namespace Heyo_Platform
 	{
 		return rect_mainground.w;
 	}
-
 }

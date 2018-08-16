@@ -11,6 +11,19 @@ namespace Heyo_Platform
 {
 	class Map
 	{
+	private:
+		class Spawn
+		{
+		public:
+			Heyo::Point point;
+			std::string name;
+		};
+		class Encounter
+		{
+		public:
+			Heyo::Rect rect;
+			std::string name;
+		};
 	public:
 	// Private variables --- Public for now...	1/13/18
 		Heyo::Sprite * background;
@@ -18,8 +31,9 @@ namespace Heyo_Platform
 		Heyo::Sprite * mainground;
 		Heyo::Rect rect_mainground;
 
-		std::vector<Heyo::Rect> coll_rect;
-
+		std::vector<Heyo::Rect> coll_list;
+		std::vector<Spawn> spawn_list;
+		std::vector<Encounter> enc_list;
 	public:
 		// Main functions
 		Map();
