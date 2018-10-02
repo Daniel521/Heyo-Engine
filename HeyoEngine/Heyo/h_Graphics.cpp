@@ -48,8 +48,7 @@ namespace Heyo {
 			delete SCREEN_HEIGHT;
 			SCREEN_HEIGHT = new int(height);
 		}
-		init();
-		return true;
+		return init();
 	}
 
 	// clears the window to pitch black
@@ -258,7 +257,6 @@ namespace Heyo {
 		{
 			SDL_DestroyTexture(m_texture);
 			m_texture = NULL;
-
 		}
 	}
 

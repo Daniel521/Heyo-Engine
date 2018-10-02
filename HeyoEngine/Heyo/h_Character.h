@@ -45,6 +45,10 @@ namespace Heyo_Platform
 		bool jumping;
 	
 		int ground;
+		// TEMPORARYYYYYYYYYYYYYYYYYY 1/22/18
+		Heyo::Rect sensor_rect;
+		// 0. none, 1. left, 2. right
+		int hitting;
 
 	public:
 

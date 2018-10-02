@@ -32,6 +32,8 @@ namespace Heyo_Platform
 		jumping = false;
 		walking = 0;
 		collision = 0;
+		sensor_rect = { 0,0,Heyo::Engine->graphics->getScreenWidth(),Heyo::Engine->graphics->getScreenHeight() };
+		hitting = 0;
 	}
 
 	Character::~Character()
@@ -94,20 +96,19 @@ namespace Heyo_Platform
 
 	void Character::update()
 	{
-		if ((jumping == true || y != 0) && (collision != onTop || y_speed > 0)
-			)
+		if ((jumping == true || y != 0) && (collision != onTop || y_speed > 0))
 		{
 			jumpAnim();
 			jumpUpdate();
 		}
 		else
 		{
-			if (walking == 1)
+			if (walking == 1 && collision != onLeft)
 			{
 				// walk left
 				walkAnim();
 			}
-			else if (walking == 2)
+			else if (walking == 2 && collision != onRight)
 			{
 				// walk right
 				walkAnim();
@@ -119,8 +120,28 @@ namespace Heyo_Platform
 			}
 		}
 
+		collision = none;
+
 		walking = 0;
-		spr_rect.x = static_cast<int>(x);
+
+		hitting = 0;
+		//cout << "spr_rect.x: " << spr_rect.x << " <= sensor_rect.x: " << sensor_rect.x << endl;
+		//if (spr_rect.x <= sensor_rect.x)
+		//{
+		//	// hitting left
+		//	hitting = 1;
+		//	cout << "Hitting left" << endl;
+		//}
+		//else if ((spr_rect.x + spr_rect.w) >= (sensor_rect.x + sensor_rect.w))
+		//{
+		//	// hitting right
+		//	hitting = 2;
+		//	cout << "Hitting right" << endl;
+		//}
+		//else
+		//{
+			spr_rect.x = static_cast<int>(x);
+		//}
 		spr_rect.y = static_cast<int>(ground - spr_rect.h - y);
 	}
 
@@ -152,7 +173,7 @@ namespace Heyo_Platform
 				}
 			}
 		}
-		collision = none;
+		//collision = none;
 		return false;
 	}
 

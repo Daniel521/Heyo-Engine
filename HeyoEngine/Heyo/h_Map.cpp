@@ -7,6 +7,10 @@ namespace Heyo_Platform
 
 	Map::Map()
 	{
+		main_character = NULL;
+		sensor_width = 0;
+		sensor_rect = { 0,0,0,0 };
+
 		background = NULL;
 		mainground = NULL;
 
@@ -31,6 +35,26 @@ namespace Heyo_Platform
 		{
 			delete mainground;
 		}
+	}
+
+	// QUE? I cant remember what i was trying to accomplish with sensor
+	bool Map::loadMainCharacter(Character & main_character, int sensor_width)
+	{
+		this->main_character = &main_character;
+
+		if (sensor_width < 0)
+			return false;
+
+		this->sensor_width = sensor_width;
+
+		sensor_rect.x = (Heyo::Engine->graphics->getScreenWidth() / 2) - (sensor_width / 2);
+		sensor_rect.y = 0;
+		sensor_rect.w = this->sensor_width;
+		sensor_rect.h = this->main_character->getGroundLevel();
+		this->main_character->sensor_rect = sensor_rect;
+
+		return true;
+
 	}
 
 	bool Map::loadBackground(std::string address)
@@ -83,12 +107,17 @@ namespace Heyo_Platform
 	void Map::update()
 	{
 		// Heyoo
+		//if (this->main_character->spr_rect.x <= )
+
 	}
 
-	void Map::draw()
+	void Map::draw(bool drawSensor)
 	{
 		Heyo::Engine->graphics->update(*background, rect_background);
 		Heyo::Engine->graphics->update(*mainground, rect_mainground);
+
+		if (drawSensor == true)
+			Heyo::Engine->graphics->drawRect(sensor_rect, true, 100, 100, 200);
 	}
 
 	void Map::setMaingoundHeight(int height)
