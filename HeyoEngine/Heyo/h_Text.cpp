@@ -9,6 +9,7 @@ namespace Heyo {
 
 	}
 
+
 	Text::~Text()
 	{
 		if (m_font != NULL)

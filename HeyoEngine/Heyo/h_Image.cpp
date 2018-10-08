@@ -1,22 +1,25 @@
 #include "h_Image.h"
 #include "h_Graphics.h"
 #include "h_heyo.h"
+#include <algorithm>
 //#include "..\SDL2\include\SDL_image.h"
 #include <SDL_image.h>
+#include <iostream>
+
 
 namespace Heyo {
 
-	Image::Image(const Graphics * graphics) : m_surface(NULL), m_texture(NULL), m_width(0), m_height(0), m_graphics(graphics), m_flippedVer(false), m_flippedHor(false), m_angle(0.0)
+	Image::Image(const Graphics * graphics, std::string imgAddress) : m_surface(NULL), m_texture(NULL), m_width(0), m_height(0), m_graphics(graphics), m_flippedVer(false), m_flippedHor(false), m_angle(0.0), flipped(SDL_FLIP_NONE)
 	{
-
+		loadImage(imgAddress);
 	}
 
-	Image::~Image()	// Done?
+	Image::~Image()
 	{
 		clear();
 	}
 
-	void Image::clear()	// Done?
+	void Image::clear()
 	{
 		if (m_surface != NULL) {
 			SDL_FreeSurface(m_surface);
@@ -35,6 +38,44 @@ namespace Heyo {
 	{
 		if (m_surface != NULL)
 			clear();
+
+		// If imgAddress == "", then load default white square texture, used for debugging mainly
+		if (imgAddress.empty() == true) {
+						// SDL_PIXELFORMAT_RGBA8888
+						// 32 bits per pixel
+			if ((m_surface = SDL_CreateRGBSurface(0, 10, 10, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000)) == NULL) {
+				std::cout << "loadedSurface Broke!" << std::endl;
+				return false;
+			}
+
+			SDL_PixelFormat * fmt;
+			fmt = m_surface->format;
+
+			SDL_LockSurface(m_surface);
+			SDL_memset(m_surface->pixels, 0xff, m_surface->h * m_surface->pitch);
+			SDL_UnlockSurface(m_surface);
+
+			SDL_SetColorKey(m_surface, SDL_TRUE, SDL_MapRGB(m_surface->format, 0, 0xFF, 0xFF));
+
+			// Convert surface to texture
+			m_texture = SDL_CreateTextureFromSurface(m_graphics->m_renderer, m_surface);
+
+			// Misc information
+			m_width = m_surface->w;
+			m_height = m_surface->h;
+
+			m_rect.x = 0;
+			m_rect.y = 0;
+			m_rect.h = m_height;
+			m_rect.w = m_width;
+
+			if (m_surface != NULL) {
+				SDL_FreeSurface(m_surface);
+				m_surface = NULL;
+			}
+
+			return true;
+		}
 
 		// Load image at specified path
 		SDL_Surface * loadedSurface = IMG_Load(imgAddress.c_str());

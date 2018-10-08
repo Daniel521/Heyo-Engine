@@ -1,12 +1,16 @@
 #include "h_Map.h"
 #include "h_heyo.h"
 #include <fstream>
-#include <iostream>
 
 namespace Heyo_Platform
 {
+
 	Map::Map()
 	{
+		main_character = NULL;
+		sensor_width = 0;
+		sensor_rect = { 0,0,0,0 };
+
 		background = NULL;
 		mainground = NULL;
 
@@ -33,6 +37,26 @@ namespace Heyo_Platform
 		}
 	}
 
+	// QUE? I cant remember what i was trying to accomplish with sensor
+	bool Map::loadMainCharacter(Character & main_character, int sensor_width)
+	{
+		this->main_character = &main_character;
+
+		if (sensor_width < 0)
+			return false;
+
+		this->sensor_width = sensor_width;
+
+		sensor_rect.x = (Heyo::Engine->graphics->getScreenWidth() / 2) - (sensor_width / 2);
+		sensor_rect.y = 0;
+		sensor_rect.w = this->sensor_width;
+		sensor_rect.h = this->main_character->getGroundLevel();
+		this->main_character->sensor_rect = sensor_rect;
+
+		return true;
+
+	}
+
 	bool Map::loadBackground(std::string address)
 	{
 		if (background != NULL)
@@ -54,33 +78,12 @@ namespace Heyo_Platform
 			return false;
 		}
 
-		string coll_type;
-		string name;
 		char end_line;
 		while (read.eof() == false && read.peek() != EOF)
 		{
-			read >> coll_type;
-			if (coll_type == "coll:")
-			{
 			read >> rect.x >> rect.y >> rect.w >> rect.h;
 			read.get(end_line);
-			coll_list.push_back(rect);
-			}
-			else if (coll_type == "spawn:")
-			{
-				Spawn t_spawn;
-				read >> t_spawn.name;
-				read >> t_spawn.point.x >> t_spawn.point.y;
-				read.get(end_line);
-				spawn_list.push_back(t_spawn);
-			}
-			else if (coll_type == "enc:")
-			{
-				read >> name;
-				read >> rect.x >> rect.y >> rect.w >> rect.h;
-				read.get(end_line);
-				enc_list.push_back({rect,name});
-			}
+			coll_rect.push_back(rect);
 		}
 
 		read.close();
@@ -104,14 +107,17 @@ namespace Heyo_Platform
 	void Map::update()
 	{
 		// Heyoo
+		//if (this->main_character->spr_rect.x <= )
+
 	}
 
-	void Map::draw()
+	void Map::draw(bool drawSensor)
 	{
-		if (background != NULL)
-			Heyo::Engine->graphics->update(*background, rect_background);
-		if (mainground != NULL)
-			Heyo::Engine->graphics->update(*mainground, rect_mainground);
+		Heyo::Engine->graphics->update(*background, rect_background);
+		Heyo::Engine->graphics->update(*mainground, rect_mainground);
+
+		if (drawSensor == true)
+			Heyo::Engine->graphics->drawRect(sensor_rect, true, 100, 100, 200);
 	}
 
 	void Map::setMaingoundHeight(int height)
@@ -133,4 +139,5 @@ namespace Heyo_Platform
 	{
 		return rect_mainground.w;
 	}
+
 }

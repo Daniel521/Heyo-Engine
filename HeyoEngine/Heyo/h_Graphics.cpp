@@ -9,7 +9,7 @@ using namespace std;
 
 namespace Heyo {
 
-	Graphics::Graphics() : SCREEN_WIDTH(new int (600)), SCREEN_HEIGHT(new int (400)), m_window(NULL), m_winSurface(NULL), m_renderer(NULL), m_texture(NULL)
+	Graphics::Graphics() : SCREEN_WIDTH(600), SCREEN_HEIGHT(400), TITLE(std::string("Heyo::Engine")), m_window(NULL), m_winSurface(NULL), m_renderer(NULL), m_texture(NULL)
 	{
 		if (!init())
 		{
@@ -18,7 +18,7 @@ namespace Heyo {
 		}
 	}
 
-	Graphics::Graphics(int width, int height, std::string title) : SCREEN_WIDTH(new int (width)), SCREEN_HEIGHT(new int (height)), m_title(title), m_window(NULL), m_winSurface(NULL), m_renderer(NULL), m_texture(NULL)
+	Graphics::Graphics(int width, int height, std::string title) : SCREEN_WIDTH(width), SCREEN_HEIGHT(height), TITLE(title), m_window(NULL), m_winSurface(NULL), m_renderer(NULL), m_texture(NULL)
 	{
 		if (!init())
 		{
@@ -34,28 +34,27 @@ namespace Heyo {
 	}
 
 	// unstable!!!
-	bool Graphics::changeScreenSize(int width, int height)
-	{
-		if (width <= 0 || height <= 0) {
-			delete SCREEN_WIDTH;
-			SCREEN_WIDTH = new int(600);
-			delete SCREEN_HEIGHT;
-			SCREEN_HEIGHT = new int(400);
-		}
-		else {
-			delete SCREEN_WIDTH;
-			SCREEN_WIDTH = new int(width);
-			delete SCREEN_HEIGHT;
-			SCREEN_HEIGHT = new int(height);
-		}
-		init();
-		return true;
-	}
+	//bool Graphics::changeScreenSize(int width, int height)
+	//{
+	//	if (width <= 0 || height <= 0) {
+	//		delete SCREEN_WIDTH;
+	//		SCREEN_WIDTH = new int(600);
+	//		delete SCREEN_HEIGHT;
+	//		SCREEN_HEIGHT = new int(400);
+	//	}
+	//	else {
+	//		delete SCREEN_WIDTH;
+	//		SCREEN_WIDTH = new int(width);
+	//		delete SCREEN_HEIGHT;
+	//		SCREEN_HEIGHT = new int(height);
+	//	}
+	//	return init();
+	//}
 
 	// clears the window to pitch black
-	void Graphics::clear()
+	void Graphics::clear(Uint8 red, Uint8 green, Uint8 blue)
 	{
-		SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255);
+		SDL_SetRenderDrawColor(m_renderer, red, green, blue, 255);
 		SDL_RenderClear(m_renderer);
 	}
 
@@ -159,12 +158,12 @@ namespace Heyo {
 
 	int Graphics::getScreenWidth()
 	{
-		return *SCREEN_WIDTH;
+		return SCREEN_WIDTH;
 	}
 
 	int Graphics::getScreenHeight()
 	{
-		return *SCREEN_HEIGHT;
+		return SCREEN_HEIGHT;
 	}
 	
 	// renders everything to the screen
@@ -179,11 +178,11 @@ namespace Heyo {
 		close();
 		// Make Window
 		m_window = SDL_CreateWindow(
-			(char*)m_title.c_str(),
+			(char*)TITLE.c_str(),
 			SDL_WINDOWPOS_UNDEFINED,
 			SDL_WINDOWPOS_UNDEFINED,
-			*SCREEN_WIDTH,
-			*SCREEN_HEIGHT,
+			SCREEN_WIDTH,
+			SCREEN_HEIGHT,
 			SDL_WindowFlags::SDL_WINDOW_SHOWN
 		);
 
@@ -220,8 +219,8 @@ namespace Heyo {
 			m_renderer,
 			SDL_PIXELFORMAT_RGBA8888,
 			SDL_TextureAccess::SDL_TEXTUREACCESS_STREAMING,
-			*SCREEN_WIDTH,
-			*SCREEN_HEIGHT
+			SCREEN_WIDTH,
+			SCREEN_HEIGHT
 		);
 
 		if (!m_texture)
@@ -237,7 +236,7 @@ namespace Heyo {
 	// closes everything
 	void Graphics::close()
 	{
-		if (m_winSurface != NULL)
+		if (m_winSurface)
 		{
 			SDL_FreeSurface(m_winSurface);
 			m_winSurface = NULL;
@@ -258,7 +257,6 @@ namespace Heyo {
 		{
 			SDL_DestroyTexture(m_texture);
 			m_texture = NULL;
-
 		}
 	}
 

@@ -46,9 +46,9 @@ namespace Heyo {
 		void clear();
 
 	public:
-		Image(const Graphics * graphics);
+		Image(const Graphics * graphics, std::string imgAddress = "");
 		~Image();
-		bool loadImage(std::string imgAddress);
+		bool loadImage(std::string imgAddress = "");
 		const int & getWidth();
 		const int & getHeight();
 		const Rect & getRect();

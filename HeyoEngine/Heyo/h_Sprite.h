@@ -47,7 +47,7 @@ namespace Heyo {
 	private:
 
 	public:
-		Sprite();
+		//Sprite();
 		Sprite(const Graphics * graphics);
 		~Sprite();
 

@@ -4,6 +4,7 @@
 //	This  class is used to make platform maps.
 **************************/
 #include "h_Sprite.h"
+#include "h_Character.h"
 #include <vector>
 
 
@@ -11,33 +12,29 @@ namespace Heyo_Platform
 {
 	class Map
 	{
-	private:
-		class Spawn
-		{
-		public:
-			Heyo::Point point;
-			std::string name;
-		};
-		class Encounter
-		{
-		public:
-			Heyo::Rect rect;
-			std::string name;
-		};
 	public:
 	// Private variables --- Public for now...	1/13/18
+
+		Heyo_Platform::Character * main_character;
+		int sensor_width;
+		Heyo::Rect sensor_rect;
+
 		Heyo::Sprite * background;
 		Heyo::Rect rect_background;
 		Heyo::Sprite * mainground;
 		Heyo::Rect rect_mainground;
 
-		std::vector<Heyo::Rect> coll_list;
-		std::vector<Spawn> spawn_list;
-		std::vector<Encounter> enc_list;
+		std::vector<Heyo::Rect> coll_rect;
+
 	public:
 		// Main functions
 		Map();
 		~Map();
+
+		// This function will specify who the main character is
+		// and who the camera will follow
+		// sensor_width: the width of the area the character can wonder in
+		bool loadMainCharacter(Character & main_character, int sensor_width = 0);
 
 		// Specify the address of the background
 		bool loadBackground(std::string address);
@@ -53,7 +50,7 @@ namespace Heyo_Platform
 
 		void update();
 
-		void draw();
+		void draw(bool drawSensor = false);
 
 	public:
 		// Get and Set Functions

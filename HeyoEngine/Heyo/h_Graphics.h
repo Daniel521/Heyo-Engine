@@ -1,7 +1,5 @@
 #pragma once
 
-//#include "..\SDL2\include\SDL.h"
-//#include "..\SDL2\include\SDL_image.h"
 #include <SDL.h>
 #include <SDL_image.h>
 #include <string>
@@ -19,9 +17,9 @@ namespace Heyo {
 	class Graphics
 	{
 	public:
-		int const * SCREEN_WIDTH;
-		int const * SCREEN_HEIGHT;
-		const std::string m_title;
+		const int SCREEN_WIDTH;
+		const int SCREEN_HEIGHT;
+		const std::string TITLE;
 
 		friend class Image;
 		friend class Text;
@@ -33,15 +31,17 @@ namespace Heyo {
 		SDL_Surface * m_winSurface;
 
 	public:
+		// Constructors
 		Graphics();
 		Graphics(int width, int height, std::string title);
 		~Graphics();
 
 		// BUGGY! Does not work well. Avoid!
-		bool changeScreenSize(int width = 600, int height = 400);
+		// Changed how screen works, this won't work anymore
+		//bool changeScreenSize(int width = 600, int height = 400);
 
 		// Clears the renderer
-		void clear();
+		void clear(Uint8 red = 0, Uint8 green = 0, Uint8 blue = 0);
 
 		//simple drawing shapes (part of update i guess)
 		

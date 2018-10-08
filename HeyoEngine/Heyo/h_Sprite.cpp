@@ -4,10 +4,9 @@ using namespace std;
 
 namespace Heyo {
 
-	Sprite::Sprite() : m_rect(NULL), m_numFrames(0), m_curFrame(0), m_spriteWidth(0), m_spriteHeight(0), m_image(NULL)
-	{
-
-	}
+	//Sprite::Sprite() : m_rect(NULL), m_numFrames(0), m_curFrame(0), m_spriteWidth(0), m_spriteHeight(0), m_image()
+	//{
+	//}
 
 	Sprite::Sprite(const Graphics * graphics) : m_rect(NULL), m_numFrames(0), m_curFrame(0), m_spriteWidth(0), m_spriteHeight(0), m_image(graphics)
 	{
