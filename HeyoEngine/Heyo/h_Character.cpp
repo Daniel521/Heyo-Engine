@@ -140,7 +140,7 @@ namespace Heyo_Platform
 		//}
 		//else
 		//{
-			spr_rect.x = static_cast<int>(x);
+		spr_rect.x = static_cast<int>(x);
 		//}
 		spr_rect.y = static_cast<int>(ground - spr_rect.h - y);
 	}
@@ -148,7 +148,8 @@ namespace Heyo_Platform
 	bool Character::checkMapCollision(Map & map)
 	{
 		Heyo::Rect collide;
-
+		Heyo::Rect char_rect;
+		//char_rect = { static_cast<int>(getX()), Heyo::Engine->graphics->getScreenHeight() -  getY(), getWidth(), getHeight() };
 		for (std::vector<Heyo::Rect>::iterator i = map.coll_rect.begin(); i != map.coll_rect.end(); i++)
 		{
 			if (SDL_IntersectRect(&*i, &spr_rect, &collide) == true)

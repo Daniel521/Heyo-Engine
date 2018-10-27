@@ -6,7 +6,7 @@ NOV 18, 2017
 
 
 12/27/2017
-Version	0.3.0
+Version	0.4.0
 
 11/19/2017
 1. I want to add a file system for the saves and to transfer data between levels. For now, they are basically isolated

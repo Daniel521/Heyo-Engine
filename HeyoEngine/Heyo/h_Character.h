@@ -46,6 +46,7 @@ namespace Heyo_Platform
 	
 		int ground;
 		// TEMPORARYYYYYYYYYYYYYYYYYY 1/22/18
+		// Thinking of removing this 10/7/18
 		Heyo::Rect sensor_rect;
 		// 0. none, 1. left, 2. right
 		int hitting;
