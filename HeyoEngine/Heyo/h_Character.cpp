@@ -1,6 +1,6 @@
 #include "h_Character.h"
 #include "h_heyo.h"
-#include "h_Map.h"
+#include "h_Level.h"
 #include <iostream>
 
 using namespace std;
@@ -27,12 +27,11 @@ namespace Heyo_Platform
 		spr_rect.y = static_cast<int>(400);
 		spr_rect.h = 100;
 		spr_rect.w = 100;
-		ground = 300;
+		ground = Heyo::Engine->graphics->getScreenHeight();
 		jump_speed = 22;
 		jumping = false;
 		walking = 0;
 		collision = 0;
-		sensor_rect = { 0,0,Heyo::Engine->graphics->getScreenWidth(),Heyo::Engine->graphics->getScreenHeight() };
 		hitting = 0;
 	}
 
@@ -61,7 +60,8 @@ namespace Heyo_Platform
 		{
 			sprite->flipHor();
 		}
-		x -= x_speed * Heyo::Engine->timer->seconds;
+		if (collision != onLeft)
+			x -= x_speed * Heyo::Engine->timer->seconds;
 		walking = 1;
 	}
 
@@ -71,17 +71,20 @@ namespace Heyo_Platform
 		{
 			sprite->flipHor();
 		}
-		x += x_speed * Heyo::Engine->timer->seconds;
+		if (collision != onRight)
+			x += x_speed * Heyo::Engine->timer->seconds;
 		walking = 2;
 	}
 
 	void Character::jump()
 	{
-		jumping = true;
-		y_speed = jump_speed;
-		if (spr_anim[2].min >= 0)
-		{
-			curr_frame = spr_anim[2].min;
+		if (jumping == false) {
+			jumping = true;
+			y_speed = jump_speed;
+			if (spr_anim[2].min >= 0)
+			{
+				curr_frame = spr_anim[2].min;
+			}
 		}
 	}
 
@@ -96,80 +99,69 @@ namespace Heyo_Platform
 
 	void Character::update()
 	{
-		if ((jumping == true || y != 0) && (collision != onTop || y_speed > 0))
-		{
+		if ((jumping == true || y != 0) && (collision != onBottom || y_speed > 0)) {
+			jumping = true;
 			jumpAnim();
 			jumpUpdate();
 		}
 		else
 		{
 			if (walking == 1 && collision != onLeft)
-			{
 				// walk left
 				walkAnim();
-			}
 			else if (walking == 2 && collision != onRight)
-			{
 				// walk right
 				walkAnim();
-			}
 			else
-			{
 				// idle
 				idleAnim();
-			}
 		}
 
 		collision = none;
-
 		walking = 0;
-
 		hitting = 0;
-		//cout << "spr_rect.x: " << spr_rect.x << " <= sensor_rect.x: " << sensor_rect.x << endl;
-		//if (spr_rect.x <= sensor_rect.x)
-		//{
-		//	// hitting left
-		//	hitting = 1;
-		//	cout << "Hitting left" << endl;
-		//}
-		//else if ((spr_rect.x + spr_rect.w) >= (sensor_rect.x + sensor_rect.w))
-		//{
-		//	// hitting right
-		//	hitting = 2;
-		//	cout << "Hitting right" << endl;
-		//}
-		//else
-		//{
 		spr_rect.x = static_cast<int>(x);
-		//}
 		spr_rect.y = static_cast<int>(ground - spr_rect.h - y);
 	}
 
-	bool Character::checkMapCollision(Map & map)
+	bool Character::checkMapCollision(Level& map)
+		// Fix this function!!
+		// Change spr_rect and how collisions check
+		// I would say to get rid of ground (make the bottom side of the screen be the ground basically)
+		// And make HeyoCollision make the rectangles measure from down to up, so the bottom side of the screen is y = 0, and the top is y = ScreenHeight
 	{
 		Heyo::Rect collide;
-		Heyo::Rect char_rect;
 		//char_rect = { static_cast<int>(getX()), Heyo::Engine->graphics->getScreenHeight() -  getY(), getWidth(), getHeight() };
 		for (std::vector<Heyo::Rect>::iterator i = map.coll_rect.begin(); i != map.coll_rect.end(); i++)
 		{
 			if (SDL_IntersectRect(&*i, &spr_rect, &collide) == true)
 			{
-				if (collide.w > collide.h)
+				if (collide.w > collide.h/2)
 				{
-					collision = onTop;
-					cout << "Collision on top" << endl;
-					return true;
+					if (collide.y == i->y) {
+						collision = onBottom;
+						jumping = false;
+						y_speed = 0;
+						setY(ground - collide.y - 1);
+						return true;
+					}
+					else {
+						collision = onTop;
+						y_speed = 0;
+						setY(ground - collide.y - collide.h - getHeight());
+						return true;
+					}
 				}
 				else if (collide.x == i->x)
 				{
 					collision = onRight;
-					cout << "Collision on right" << endl;
+					setX(collide.x - getWidth() + 1);
 					return true;
 				}
 				else
 				{
 					collision = onLeft;
-					cout << "Collision on left" << endl;
+					setX(collide.x + collide.w - 1);
 					return true;
 				}
 			}
