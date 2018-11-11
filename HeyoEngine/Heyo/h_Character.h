@@ -7,7 +7,7 @@
 
 namespace Heyo_Platform
 {
-	class Map;
+	class Level;
 	// Classes used to make characters for a platform game, idk how to spell
 
 
@@ -20,7 +20,8 @@ namespace Heyo_Platform
 			none = 0,
 			onLeft = 1,
 			onRight = 2,
-			onTop = 3
+			onTop = 4,
+			onBottom = 8
 		};
 	public:
 
@@ -34,6 +35,7 @@ namespace Heyo_Platform
 		unsigned char collision;
 
 		Heyo::Rect spr_rect;
+		Heyo::Rect collision_rect;
 
 		float x;
 		float y;
@@ -45,10 +47,8 @@ namespace Heyo_Platform
 		bool jumping;
 	
 		int ground;
-		// TEMPORARYYYYYYYYYYYYYYYYYY 1/22/18
-		Heyo::Rect sensor_rect;
 		// 0. none, 1. left, 2. right
-		int hitting;
+		short hitting;
 
 	public:
 
@@ -66,7 +66,11 @@ namespace Heyo_Platform
 		void update();
 
 		// Checks if it collided with a collision
-		bool checkMapCollision(Map & map);
+		bool checkMapCollision(Level & map);
+
+		void setCollisonRect(Heyo::Rect coll);
+
+		bool checkCollision(CollisionLabel col);
 
 	public:
 		// Mutators and Accessors

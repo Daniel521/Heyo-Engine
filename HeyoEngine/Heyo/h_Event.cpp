@@ -13,9 +13,7 @@ namespace Heyo {
 		return SDL_PollEvent(&a_event.m_event);
 	}
 
-	Events::Event::Event()
-	{
-	}
+	Events::Event::Event() {}
 
 
 	Events::Event::~Event()
@@ -139,8 +137,14 @@ namespace Heyo {
 			is_exit = true;
 			return false;
 		}
-		if (SDL_PollEvent(&m_event.m_event) != 0)
+		int duplicate = K_UNKNOWN;
+		int dup_type = key_types::UNKOWN;
+
+		while (SDL_PollEvent(&m_event.m_event) != 0)
 		{
+			if (m_event.keyPressed() == duplicate && m_event.type() == dup_type) continue;
+			duplicate = m_event.keyPressed();
+			dup_type = m_event.type();
 			for (std::list<Key>::iterator i = m_keylist.begin(); i != m_keylist.end(); i++)
 			{
 				if (m_event.keyPressed() == i->m_key)

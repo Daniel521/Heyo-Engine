@@ -54,10 +54,12 @@ namespace Heyo {
 
 		void update(Sprite & p_sprite, int x, int y);
 		void update(Sprite & p_sprite, Rect & destin);
+		// be careful when using this method, won't work for characters. will fix later 10/8/18
 		void update(Sprite & p_sprite, Point & destin);
 		void update(Text & p_text, Rect & destin, std::string text, Uint8 red = 255, Uint8 green = 255, Uint8 blue = 255);
 		// update text, point specifies the center of the text
 		void update(Text & p_text, Point & center, std::string text, double source_mult = 1.0, Uint8 red = 255, Uint8 green = 255, Uint8 blue = 255);
+		void update(Text & p_text, int x, int y, std::string text, double source_mult = 1.0, Uint8 red = 255, Uint8 green = 255, Uint8 blue = 255);
 		void update(Image & p_image, Rect & destin);
 		void update(Image & p_image, Rect & source, Rect & destin);
 		void update(Image & p_image, Point & destin);

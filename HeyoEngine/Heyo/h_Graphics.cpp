@@ -137,6 +137,21 @@ namespace Heyo {
 		}
 	}
 
+	void Graphics::update(Text & p_text, int x, int y, std::string text, double source_mult, Uint8 red, Uint8 green, Uint8 blue)
+	{
+		p_text.setText(text, { p_text.getAlpha(),blue,green,red });
+		Rect dest;
+		dest.x = x;
+		dest.w = static_cast<int>(p_text.getWidth() * source_mult);
+		dest.y = y;
+		dest.h = static_cast<int>(p_text.getHeight() * source_mult);
+
+		if (SDL_RenderCopyEx(m_renderer, p_text.m_texture, NULL, &dest, p_text.getAngle(), NULL, p_text.flipped) != 0)
+		{
+			SDL_Log("Sprite did not load: %s", SDL_GetError());
+		}
+	}
+
 	// adds an image (still sprite) to the destination
 	void Graphics::update(Image & p_image, Rect & destin)
 	{
