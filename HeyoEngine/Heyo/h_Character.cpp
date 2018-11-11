@@ -33,6 +33,8 @@ namespace Heyo_Platform
 		walking = 0;
 		collision = 0;
 		hitting = 0;
+
+		collision_rect = { 0,0,spr_rect.w,spr_rect.h };
 	}
 
 	Character::~Character()
@@ -99,17 +101,17 @@ namespace Heyo_Platform
 
 	void Character::update()
 	{
-		if ((jumping == true || y != 0) && (collision != onBottom || y_speed > 0)) {
+		if ((jumping == true || y != 0) && (checkCollision(onBottom) == false || y_speed > 0)) {
 			jumping = true;
 			jumpAnim();
 			jumpUpdate();
 		}
 		else
 		{
-			if (walking == 1 && collision != onLeft)
+			if (walking == 1 && checkCollision(onLeft) == false)
 				// walk left
 				walkAnim();
-			else if (walking == 2 && collision != onRight)
+			else if (walking == 2 && checkCollision(onRight) == false)
 				// walk right
 				walkAnim();
 			else
@@ -130,44 +132,104 @@ namespace Heyo_Platform
 		// I would say to get rid of ground (make the bottom side of the screen be the ground basically)
 		// And make HeyoCollision make the rectangles measure from down to up, so the bottom side of the screen is y = 0, and the top is y = ScreenHeight
 	{
+
+		Heyo::Rect character_rect;
+		if (collision_rect.h == 0)
+			character_rect = { spr_rect.x, spr_rect.y, spr_rect.x, spr_rect.y };
+		else
+			character_rect = { spr_rect.x + collision_rect.x, spr_rect.y + collision_rect.y, collision_rect.w, collision_rect.h };
+
 		Heyo::Rect collide;
 		//char_rect = { static_cast<int>(getX()), Heyo::Engine->graphics->getScreenHeight() -  getY(), getWidth(), getHeight() };
 		for (std::vector<Heyo::Rect>::iterator i = map.coll_rect.begin(); i != map.coll_rect.end(); i++)
 		{
-			if (SDL_IntersectRect(&*i, &spr_rect, &collide) == true)
+			if (SDL_IntersectRect(&*i, &character_rect, &collide) == true)
 			{
 				if (collide.w > collide.h/2)
 				{
 					if (collide.y == i->y) {
-						collision = onBottom;
+						collision |= onBottom;
 						jumping = false;
 						y_speed = 0;
-						setY(ground - collide.y - 1);
-						return true;
+						setY(ground - collide.y - 1 - (getWidth() - collision_rect.y - collision_rect.h)); // Can we simplify this math?
+						continue;
+						//return true;
 					}
 					else {
-						collision = onTop;
+						collision |= onTop;
 						y_speed = 0;
-						setY(ground - collide.y - collide.h - getHeight());
-						return true;
+						setY(ground - collide.y - collide.h - getHeight() + collision_rect.y); // Check math as well, please
+						continue;
+						//return true;
 					}
 				}
 				else if (collide.x == i->x)
 				{
-					collision = onRight;
-					setX(collide.x - getWidth() + 1);
-					return true;
+					collision |= onRight;
+					//setX(collide.x - character_rect.w + 1);
+					setX(collide.x - collision_rect.x - collision_rect.w + 1);
+					continue;
+					//return true;
 				}
 				else
 				{
-					collision = onLeft;
-					setX(collide.x + collide.w - 1);
-					return true;
+					collision |= onLeft;
+					setX(collide.x + collide.w - collision_rect.x - 1);
+					continue;
+					//return true;
 				}
 			}
 		}
+
+		//for (std::vector<Heyo::Rect>::iterator i = map.coll_rect.begin(); i != map.coll_rect.end(); i++)
+		//{
+		//	if (SDL_IntersectRect(&*i, &spr_rect, &collide) == true)
+		//	{
+		//		if (collide.w > collide.h / 2)
+		//		{
+		//			if (collide.y == i->y) {
+		//				collision = onBottom;
+		//				jumping = false;
+		//				y_speed = 0;
+		//				setY(ground - collide.y - 1);
+		//				return true;
+		//			}
+		//			else {
+		//				collision = onTop;
+		//				y_speed = 0;
+		//				setY(ground - collide.y - collide.h - getHeight());
+		//				return true;
+		//			}
+		//		}
+		//		else if (collide.x == i->x)
+		//		{
+		//			collision = onRight;
+		//			setX(collide.x - getWidth() + 1);
+		//			return true;
+		//		}
+		//		else
+		//		{
+		//			collision = onLeft;
+		//			setX(collide.x + collide.w - 1);
+		//			return true;
+		//		}
+		//	}
+		//}
+
+
+
 		//collision = none;
-		return false;
+		return true;
+	}
+
+	void Character::setCollisonRect(Heyo::Rect coll)
+	{
+		collision_rect = coll;
+	}
+
+	bool Character::checkCollision(CollisionLabel col)
+	{
+		return (collision&col) == col;
 	}
 
 	void Character::setIdleAnim(int first, int last)
@@ -187,13 +249,17 @@ namespace Heyo_Platform
 		spr_anim[1].max = last;
 	}
 
-	void Character::setHeight(int height)
-	{
+	void Character::setHeight(int height) {
+		collision_rect.y = static_cast<int>(collision_rect.y * ((1.0f * height) / spr_rect.h));
+		collision_rect.h =  static_cast<int>(collision_rect.h * ((1.0f * height) / spr_rect.h));
+
 		spr_rect.h = height;
 	}
 
-	void Character::setWidth(int width)
-	{
+	void Character::setWidth(int width) {
+		collision_rect.x = static_cast<int>(collision_rect.x * ((1.0f* width) / spr_rect.w));
+		collision_rect.w =  static_cast<int>(collision_rect.w * ((1.0f* width) / spr_rect.w));
+
 		spr_rect.w = width;
 	}
 
