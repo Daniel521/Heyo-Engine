@@ -36,7 +36,7 @@ namespace Heyo_Platform {
 
 		void update();
 
-		void draw(bool drawSensor = false);
+		void draw(bool drawSensor = false, bool drawCollision = false);
 
 		void drawCollision();
 

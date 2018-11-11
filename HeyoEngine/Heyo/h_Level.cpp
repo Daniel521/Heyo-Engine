@@ -135,8 +135,7 @@ namespace Heyo_Platform
 		}
 	}
 
-	void Level::draw(bool drawSensor)
-	{
+	void Level::draw(bool drawSensor, bool drawCollision) {
 		if (background != NULL)
 			Heyo::Engine->graphics->update(*background, rect_background);
 		if (mainground != NULL)
@@ -147,6 +146,11 @@ namespace Heyo_Platform
 
 		if (main_character != NULL) {
 			updaterect_mc();
+			if (drawCollision == true) {
+				Heyo::Rect temp = { rect_mc.x + main_character->collision_rect.x, rect_mc.y + main_character->collision_rect.y, main_character->collision_rect.w, main_character->collision_rect.h };
+				Heyo::Engine->graphics->drawRect(temp, true, 255, 255, 0);
+			}
+			//Heyo::Engine->graphics->drawRect(rect_mc, false, 0, 255, 200);
 			Heyo::Engine->graphics->update(*main_character->sprite, rect_mc);
 		}
 	}
