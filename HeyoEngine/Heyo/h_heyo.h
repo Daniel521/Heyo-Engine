@@ -14,9 +14,7 @@ using std::string;
 
 int HeyoMain();
 
-class EngineClass 
-{
-private:
+class EngineClass {
 
 public:
 	Heyo::Graphics * graphics;

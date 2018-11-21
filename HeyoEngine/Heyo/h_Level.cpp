@@ -114,9 +114,6 @@ namespace Heyo_Platform
 			rect_mainground.h = height;
 		//rect_mainground.y = 0;
 		rect_mainground.y = Heyo::Engine->graphics->getScreenHeight() - height;	// Shouldn't this be ScreenHeight - height? 10/7/2018
-		std::cout << "w: " << rect_mainground.w << std::endl;
-		std::cout << "h: " << rect_mainground.h << std::endl;
-		std::cout << "y: " << rect_mainground.y << std::endl;
 		return true;
 	}
 

@@ -48,7 +48,6 @@ namespace Heyo_Platform
 	
 		int ground;
 		// 0. none, 1. left, 2. right
-		short hitting;
 
 	public:
 

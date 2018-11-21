@@ -32,7 +32,6 @@ namespace Heyo_Platform
 		jumping = false;
 		walking = 0;
 		collision = 0;
-		hitting = 0;
 
 		collision_rect = { 0,0,spr_rect.w,spr_rect.h };
 	}
@@ -121,7 +120,6 @@ namespace Heyo_Platform
 
 		collision = none;
 		walking = 0;
-		hitting = 0;
 		spr_rect.x = static_cast<int>(x);
 		spr_rect.y = static_cast<int>(ground - spr_rect.h - y);
 	}
@@ -145,7 +143,7 @@ namespace Heyo_Platform
 		{
 			if (SDL_IntersectRect(&*i, &character_rect, &collide) == true)
 			{
-				if (collide.w > collide.h/2)
+				if (collide.w > collide.h/2 && collide.w > 1)
 				{
 					if (collide.y == i->y) {
 						collision |= onBottom;
