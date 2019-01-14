@@ -19,6 +19,9 @@ namespace Heyo_Platform
 			anim_period[i] = .2f;
 		}
 		curr_frame = 0;
+		idle_time_since_last_anim = 0;
+		jump_time_since_last_anim = 0;
+		walk_time_since_last_anim = 0;
 		x = 10.0f;
 		y = 0.0f;
 		x_speed = 400.0f;
@@ -32,6 +35,7 @@ namespace Heyo_Platform
 		jumping = false;
 		walking = 0;
 		collision = 0;
+		health = 100.0f;
 
 		collision_rect = { 0,0,spr_rect.w,spr_rect.h };
 	}
@@ -117,7 +121,6 @@ namespace Heyo_Platform
 				// idle
 				idleAnim();
 		}
-
 		collision = none;
 		walking = 0;
 		spr_rect.x = static_cast<int>(x);
@@ -136,7 +139,7 @@ namespace Heyo_Platform
 			character_rect = { spr_rect.x, spr_rect.y, spr_rect.x, spr_rect.y };
 		else
 			character_rect = { spr_rect.x + collision_rect.x, spr_rect.y + collision_rect.y, collision_rect.w, collision_rect.h };
-
+		//std::cout << "character_rect = x:" << character_rect.x << ", y: " << character_rect.y << ", w: " << character_rect.w << ", h: " << character_rect.h << std::endl;
 		Heyo::Rect collide;
 		//char_rect = { static_cast<int>(getX()), Heyo::Engine->graphics->getScreenHeight() -  getY(), getWidth(), getHeight() };
 		for (std::vector<Heyo::Rect>::iterator i = map.coll_rect.begin(); i != map.coll_rect.end(); i++)
@@ -151,14 +154,12 @@ namespace Heyo_Platform
 						y_speed = 0;
 						setY(ground - collide.y - 1 - (getWidth() - collision_rect.y - collision_rect.h)); // Can we simplify this math?
 						continue;
-						//return true;
 					}
 					else {
 						collision |= onTop;
 						y_speed = 0;
 						setY(ground - collide.y - collide.h - getHeight() + collision_rect.y); // Check math as well, please
 						continue;
-						//return true;
 					}
 				}
 				else if (collide.x == i->x)
@@ -167,57 +168,47 @@ namespace Heyo_Platform
 					//setX(collide.x - character_rect.w + 1);
 					setX(collide.x - collision_rect.x - collision_rect.w + 1);
 					continue;
-					//return true;
 				}
 				else
 				{
 					collision |= onLeft;
 					setX(collide.x + collide.w - collision_rect.x - 1);
 					continue;
-					//return true;
 				}
 			}
 		}
 
-		//for (std::vector<Heyo::Rect>::iterator i = map.coll_rect.begin(); i != map.coll_rect.end(); i++)
-		//{
-		//	if (SDL_IntersectRect(&*i, &spr_rect, &collide) == true)
-		//	{
-		//		if (collide.w > collide.h / 2)
-		//		{
-		//			if (collide.y == i->y) {
-		//				collision = onBottom;
-		//				jumping = false;
-		//				y_speed = 0;
-		//				setY(ground - collide.y - 1);
-		//				return true;
-		//			}
-		//			else {
-		//				collision = onTop;
-		//				y_speed = 0;
-		//				setY(ground - collide.y - collide.h - getHeight());
-		//				return true;
-		//			}
-		//		}
-		//		else if (collide.x == i->x)
-		//		{
-		//			collision = onRight;
-		//			setX(collide.x - getWidth() + 1);
-		//			return true;
-		//		}
-		//		else
-		//		{
-		//			collision = onLeft;
-		//			setX(collide.x + collide.w - 1);
-		//			return true;
-		//		}
-		//	}
-		//}
-
-
-
-		//collision = none;
 		return true;
+	}
+
+	bool Character::checkCharacterCollision(Character & npc)
+	{
+		Heyo::Rect character_rect;
+		if (collision_rect.h == 0)
+			character_rect = { spr_rect.x, spr_rect.y, spr_rect.x, spr_rect.y };
+		else
+			character_rect = { spr_rect.x + collision_rect.x, spr_rect.y + collision_rect.y, collision_rect.w, collision_rect.h };
+
+		Heyo::Rect npc_rect;
+		if (npc.collision_rect.h == 0)
+			npc_rect = { npc.spr_rect.x, npc.spr_rect.y, npc.spr_rect.x, npc.spr_rect.y };
+		else
+			npc_rect = { npc.spr_rect.x + npc.collision_rect.x, npc.spr_rect.y + npc.collision_rect.y, npc.collision_rect.w, npc.collision_rect.h };
+
+		/*cout << "My Collision:" << endl;
+		cout << "x: " << character_rect.x << '\t' << "y: " << character_rect.y << endl;
+		cout << "w: " << character_rect.w << '\t' << "h: " << character_rect.h << endl;
+
+		cout << "Enemy Collision:" << endl;
+		cout << "x: " << npc_rect.x << '\t' << "y: " << npc_rect.y << endl;
+		cout << "w: " << npc_rect.w << '\t' << "h: " << npc_rect.h << endl;
+		cout << endl;*/
+
+		Heyo::Rect collide;
+		if (SDL_IntersectRect(&npc_rect, &character_rect, &collide) == true) {
+			return true;
+		}
+		return false;
 	}
 
 	void Character::setCollisonRect(Heyo::Rect coll)
@@ -362,17 +353,17 @@ namespace Heyo_Platform
 
 	void Character::idleAnim()
 	{
-		if (spr_anim[0].min < 0)
+		if (spr_anim[0].min < 0) {
 			return;
-		static float time_since_last_anim = 0;
-		time_since_last_anim += Heyo::Engine->timer->seconds;
+		}
+		idle_time_since_last_anim += Heyo::Engine->timer->seconds;
 		if (curr_frame < spr_anim[0].min || curr_frame >= spr_anim[0].max)
 		{
 			curr_frame = spr_anim[0].min;
 		}
-		if (time_since_last_anim >= anim_period[0])
+		if (idle_time_since_last_anim >= anim_period[0])
 		{
-			time_since_last_anim = 0;
+			idle_time_since_last_anim = 0;
 			curr_frame++;
 		}
 		sprite->swap(curr_frame);
@@ -382,15 +373,14 @@ namespace Heyo_Platform
 	{
 		if (spr_anim[2].min < 0)
 			return;
-		static float time_since_last_anim = 0;
-		time_since_last_anim += Heyo::Engine->timer->seconds;
+		jump_time_since_last_anim += Heyo::Engine->timer->seconds;
 		if (curr_frame >= spr_anim[2].max)
 		{
 			return;
 		}
-		if (time_since_last_anim >= anim_period[2])
+		if (jump_time_since_last_anim >= anim_period[2])
 		{
-			time_since_last_anim = 0;
+			jump_time_since_last_anim = 0;
 			curr_frame++;
 		}
 		sprite->swap(curr_frame);
@@ -400,15 +390,14 @@ namespace Heyo_Platform
 	{
 		if (spr_anim[1].min < 0)
 			return;
-		static float time_since_last_anim = 0;
-		time_since_last_anim += Heyo::Engine->timer->seconds;
+		walk_time_since_last_anim += Heyo::Engine->timer->seconds;
 		if (curr_frame < spr_anim[1].min || curr_frame >= spr_anim[1].max)
 		{
 			curr_frame = spr_anim[1].min;
 		}
-		if (time_since_last_anim >= anim_period[1])
+		if (walk_time_since_last_anim >= anim_period[1])
 		{
-			time_since_last_anim = 0;
+			walk_time_since_last_anim = 0;
 			curr_frame++;
 		}
 		sprite->swap(curr_frame);

@@ -161,6 +161,12 @@ namespace Heyo_Platform
 		}
 	}
 
+	void Level::drawCharacter(Character & character)
+	{
+		Heyo::Rect rect = { rect_mainground.x + character.getX(), character.getGroundLevel() - character.getY() - character.getHeight(), character.getWidth(), character.getHeight() };
+		Heyo::Engine->graphics->update(*character.sprite, rect);
+	}
+
 	void Level::setMaingoundHeight(int height)
 	{
 		rect_mainground.h = height;

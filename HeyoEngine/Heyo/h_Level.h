@@ -40,6 +40,8 @@ namespace Heyo_Platform {
 
 		void drawCollision();
 
+		void drawCharacter(Character& character);
+
 	public:
 		// Get and Set Functions
 		void setMaingoundHeight(int height);
@@ -74,7 +76,7 @@ namespace Heyo_Platform {
 		Heyo::Rect rect_mainground;
 
 		std::vector<Heyo::Rect> coll_rect;
-
+		std::vector<Heyo_Platform::Character*> npc;
 
 	};
 
