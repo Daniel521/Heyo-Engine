@@ -65,8 +65,8 @@ namespace Heyo_Platform
 			delete background;
 			background = NULL;
 		}
-		background = new Heyo::Sprite(Heyo::Engine->graphics);
-		return background->loadSprite(address);
+		background = new Heyo::Sprite;
+		return background->load(Heyo::Engine->graphics, address);
 	}
 
 	bool Level::loadCollision(std::string address)
@@ -96,19 +96,19 @@ namespace Heyo_Platform
 			delete mainground;
 			mainground = NULL;
 		}
-		mainground = new Heyo::Sprite(Heyo::Engine->graphics);
+		mainground = new Heyo::Sprite;
 
 
-		bool success = mainground->loadSprite(address);
+		bool success = mainground->load(Heyo::Engine->graphics, address);
 		if (success == false)
 			return false;
 		if (width == -1) {
-			rect_mainground.w = mainground->getWidth();
+			rect_mainground.w = mainground->width();
 		}
 		else
 			rect_mainground.w = width;
 		if (height == -1) {
-			rect_mainground.h = mainground->getHeight();
+			rect_mainground.h = mainground->height();
 		}
 		else
 			rect_mainground.h = height;
@@ -134,9 +134,9 @@ namespace Heyo_Platform
 
 	void Level::draw(bool drawSensor, bool drawCollision) {
 		if (background != NULL)
-			Heyo::Engine->graphics->update(*background, rect_background);
+			Heyo::Engine->graphics->draw(*background, rect_background);
 		if (mainground != NULL)
-			Heyo::Engine->graphics->update(*mainground, rect_mainground);
+			Heyo::Engine->graphics->draw(*mainground, rect_mainground);
 
 		if (drawSensor == true && sensor_setting == enabled)
 			Heyo::Engine->graphics->drawRect(sensor_rect, true, 100, 100, 200);
@@ -148,7 +148,7 @@ namespace Heyo_Platform
 				Heyo::Engine->graphics->drawRect(temp, true, 255, 255, 0);
 			}
 			//Heyo::Engine->graphics->drawRect(rect_mc, false, 0, 255, 200);
-			Heyo::Engine->graphics->update(*main_character->sprite, rect_mc);
+			Heyo::Engine->graphics->draw(*main_character->sprite, rect_mc);
 		}
 	}
 
@@ -164,7 +164,7 @@ namespace Heyo_Platform
 	void Level::drawCharacter(Character & character)
 	{
 		Heyo::Rect rect = { rect_mainground.x + character.getX(), character.getGroundLevel() - character.getY() - character.getHeight(), character.getWidth(), character.getHeight() };
-		Heyo::Engine->graphics->update(*character.sprite, rect);
+		Heyo::Engine->graphics->draw(*character.sprite, rect);
 	}
 
 	void Level::setMaingoundHeight(int height)

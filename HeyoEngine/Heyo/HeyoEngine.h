@@ -7,7 +7,10 @@
 #include "h_Level.h"
 #include "h_Map.h"
 
-#ifdef HEYODEBUG
-#define game	Heyo::Engine
+#define HeyoWhile(x) while(Heyo::Engine->loop() && x)
 #define HeyoMain HeyoMain
+#ifdef HEYODEBUG
+// Some short hands
+#define game	Heyo::Engine
+#define gfx		Heyo::Engine->graphics
 #endif

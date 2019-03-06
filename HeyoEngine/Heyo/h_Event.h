@@ -273,7 +273,6 @@ namespace Heyo {
 		K_EJECT = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_EJECT),
 		K_SLEEP = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_SLEEP)
 	};
-
 	enum key_types {
 		UNKOWN = 0,
 		QUIT = SDL_QUIT,
@@ -282,28 +281,31 @@ namespace Heyo {
 	};
 
 	// this handles all of the events/inputs form the user
-	class Events 
-	{
+	class Events {
 	public:
-
-		class Event
-		{
-		private:
-			SDL_Event m_event;
-
+		class Event {
 		public:
-			Event();
-			~Event();
-
-			int type();
-			int keyPressed();
-			bool quit();
+			Event() = default;
+			Uint32 type() { return m_event.type; }
+			int keyPressed() { return m_event.key.keysym.sym; }
+			bool quit() { return m_event.type == QUIT; }
 
 			friend bool processEvent(Event & a_event);
 			friend class Events;
+		private:
+			SDL_Event m_event;
 		};
 
 		class Key {
+		public:
+			Key() : m_enaSwitch(NULL), m_disSwitch(NULL), m_pressed(false),
+				m_enaTemp(NULL), m_disTemp(NULL) {}
+			~Key();
+
+			void init(keys key, bool * enaSwitch = NULL, bool * disSwitch = NULL);
+			void enable();
+			void disable();
+			Key& operator=(Key & val);
 		public:
 			keys m_key;
 			bool m_pressed;
@@ -311,28 +313,10 @@ namespace Heyo {
 			bool * m_disSwitch;
 			bool * m_enaTemp;
 			bool * m_disTemp;
-
-		public:
-			Key();
-			~Key();
-
-			void init(keys key, bool * enaSwitch = NULL, bool * disSwitch = NULL);
-
-			void enable();
-			void disable();
-
-			Key & operator=(Key & val);
 		};
 
-	private:
-		bool is_exit;
-		Event m_event;
-		std::list<Key> m_keylist;
-		//std::vector<int> m_enaScalelist;
-
-
 	public:
-		Events();
+		Events(): is_exit(false) {}
 		~Events();
 
 		// returns true if the quit command has been executed,
@@ -354,13 +338,17 @@ namespace Heyo {
 		// disSwitch should be left as null if you don't want to use it
 		bool addKey(keys key, bool * enaSwitch, bool * disSwitch = NULL);
 
-		//bool addHoldPressKey(keys key, int * enaScale, bool * disSwitch);
-
 		// returns the number of keys
-		int getSize();
+		int size() { return static_cast<int>(m_keylist.size()); }
 
+	private:
+		bool is_exit;
+		Event m_event;
+		std::list<Key> m_keylist;
+		//std::vector<int> m_enaScalelist;
 	};
 
 	bool processEvent(Events::Event & a_event);
-
+	/*	Checks to see if there is a new event,
+	returns true if there is, false if not*/
 }

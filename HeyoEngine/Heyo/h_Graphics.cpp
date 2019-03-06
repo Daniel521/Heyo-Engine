@@ -8,14 +8,14 @@ using namespace std;
 
 namespace Heyo {
 
-	Graphics::Graphics() : SCREEN_WIDTH(600), SCREEN_HEIGHT(400), TITLE(std::string("Heyo::Engine")), m_window(NULL), m_winSurface(NULL), m_renderer(NULL), m_texture(NULL) {
+	Graphics::Graphics() : SCREEN_WIDTH(600), SCREEN_HEIGHT(400), TITLE(std::string("Heyo::Engine")), m_window(NULL), m_win_surface(NULL), m_renderer(NULL), m_texture(NULL) {
 		if (!init()) {
 			SDL_Log("Failed to Initiate Heyo Engine: %s", SDL_GetError());
 			close();
 		}
 	}
 
-	Graphics::Graphics(int width, int height, std::string title) : SCREEN_WIDTH(width), SCREEN_HEIGHT(height), TITLE(title), m_window(NULL), m_winSurface(NULL), m_renderer(NULL), m_texture(NULL) {
+	Graphics::Graphics(int width, int height, std::string title) : SCREEN_WIDTH(width), SCREEN_HEIGHT(height), TITLE(title), m_window(NULL), m_win_surface(NULL), m_renderer(NULL), m_texture(NULL) {
 		if (!init()) {
 			SDL_Log("Failed to Initiate Heyo Engine.");
 			close();
@@ -40,13 +40,13 @@ namespace Heyo {
 	//	return init();
 	//}
 
-	// clears the window to pitch black
+	// clears the window to a color
 	void Graphics::clear(Uint8 red, Uint8 green, Uint8 blue) {
 		SDL_SetRenderDrawColor(m_renderer, red, green, blue, 255);
 		SDL_RenderClear(m_renderer);
 	}
 
-	void Graphics::drawRect(Rect & destin, bool fill, Uint8 red, Uint8 green, Uint8 blue) {
+	void Graphics::drawRect(Rect destin, bool fill, Uint8 red, Uint8 green, Uint8 blue) {
 		SDL_SetRenderDrawColor(m_renderer, red, green, blue, 255);
 		if (fill)
 			SDL_RenderFillRect(m_renderer, &destin);
@@ -69,32 +69,32 @@ namespace Heyo {
 	}
 
 
-	void Graphics::update(Sprite & p_sprite, int x, int y) {
-		Rect temp = { x, y, p_sprite.getdestWidth(), p_sprite.getdestHeight() };
-		if (SDL_RenderCopyEx(m_renderer, p_sprite.m_image.m_texture, &p_sprite.getcurRect(), &temp, p_sprite.m_image.getAngle(), NULL, p_sprite.m_image.flipped) != 0)
+	void Graphics::draw(Sprite& p_sprite, int x, int y) {
+		Rect temp = { x, y, p_sprite.destWidth(), p_sprite.destHeight() };
+		if (SDL_RenderCopyEx(m_renderer, p_sprite.m_image.m_texture, &p_sprite.curRect(), &temp, p_sprite.m_image.angle(), NULL, p_sprite.m_image.flipped) != 0)
 			SDL_Log("Sprite did not load: %s", SDL_GetError());
 	}
 
 	// adds the sprite at the destination
-	void Graphics::update(Sprite & p_sprite, Rect & destin) {
-		if (SDL_RenderCopyEx(m_renderer, p_sprite.m_image.m_texture, &p_sprite.getcurRect(), &destin, p_sprite.m_image.getAngle(), NULL, p_sprite.m_image.flipped) != 0)
+	void Graphics::draw(Sprite& p_sprite, Rect destin) {
+		if (SDL_RenderCopyEx(m_renderer, p_sprite.m_image.m_texture, &p_sprite.curRect(), &destin, p_sprite.m_image.angle(), NULL, p_sprite.m_image.flipped) != 0)
 			SDL_Log("Sprite did not load: %s", SDL_GetError());
 	}
 
-	void Graphics::update(Sprite & p_sprite, Point & destin) {
-		Rect temp = { p_sprite.getcurRect().h, p_sprite.getcurRect().w, destin.x, destin.y };
-		if (SDL_RenderCopyEx(m_renderer, p_sprite.m_image.m_texture, &p_sprite.getcurRect(), &temp, p_sprite.m_image.getAngle(), NULL, p_sprite.m_image.flipped) != 0)
+	void Graphics::draw(Sprite& p_sprite, Point destin) {
+		Rect temp = { p_sprite.curRect().h, p_sprite.curRect().w, destin.x, destin.y };
+		if (SDL_RenderCopyEx(m_renderer, p_sprite.m_image.m_texture, &p_sprite.curRect(), &temp, p_sprite.m_image.angle(), NULL, p_sprite.m_image.flipped) != 0)
 			SDL_Log("Sprite did not load: %s", SDL_GetError());
 	}
 
 	// adds text to the destination
-	void Graphics::update(Text & p_text, Rect & destin, string text, Uint8 red, Uint8 green, Uint8 blue) {
+	void Graphics::draw(Text& p_text, Rect destin, string text, Uint8 red, Uint8 green, Uint8 blue) {
 		p_text.setText(text, { 255,blue,green,red });
 		if (SDL_RenderCopyEx(m_renderer, p_text.m_texture, NULL, &destin, p_text.getAngle(), NULL, p_text.flipped) != 0)
 			SDL_Log("Sprite did not load: %s", SDL_GetError());
 	}
 
-	void Graphics::update(Text & p_text, Point & center, string text, double source_mult, Uint8 red, Uint8 green, Uint8 blue) {
+	void Graphics::draw(Text& p_text, Point center, string text, double source_mult, Uint8 red, Uint8 green, Uint8 blue) {
 		p_text.setText(text, { p_text.getAlpha(),blue,green,red });
 		double width = p_text.getWidth() / 2.0;
 		double height = p_text.getHeight() / 2.0;
@@ -107,7 +107,7 @@ namespace Heyo {
 			SDL_Log("Sprite did not load: %s", SDL_GetError());
 	}
 
-	void Graphics::update(Text & p_text, int x, int y, std::string text, double source_mult, Uint8 red, Uint8 green, Uint8 blue) {
+	void Graphics::draw(Text& p_text, int x, int y, std::string text, double source_mult, Uint8 red, Uint8 green, Uint8 blue) {
 		p_text.setText(text, { p_text.getAlpha(),blue,green,red });
 		Rect dest;
 		dest.x = x;
@@ -119,19 +119,19 @@ namespace Heyo {
 	}
 
 	// adds an image (still sprite) to the destination
-	void Graphics::update(Image & p_image, Rect & destin) {
-		SDL_RenderCopyEx(m_renderer, p_image.m_texture, NULL, &destin, p_image.getAngle(), NULL, p_image.flipped);
+	void Graphics::draw(Image& p_image, Rect destin) {
+		SDL_RenderCopyEx(m_renderer, p_image.m_texture, NULL, &destin, p_image.angle(), NULL, p_image.flipped);
 	}
 
-	void Graphics::update(Image & p_image, Rect & source, Rect & destin) {
-		SDL_RenderCopyEx(m_renderer, p_image.m_texture, NULL, &destin, p_image.getAngle(), NULL, p_image.flipped);
+	void Graphics::draw(Image& p_image, Rect source, Rect destin) {
+		SDL_RenderCopyEx(m_renderer, p_image.m_texture, NULL, &destin, p_image.angle(), NULL, p_image.flipped);
 	}
 
-	void Graphics::update(Image & p_image, Point & destin) {
+	void Graphics::draw(Image& p_image, Point destin) {
 		Rect temp;
-		temp = { p_image.getRect().h, p_image.getRect().w, destin.x, destin.y };
+		temp = { p_image.rect().h, p_image.rect().w, destin.x, destin.y };
 
-		SDL_RenderCopyEx(m_renderer, p_image.m_texture, NULL, &temp, p_image.getAngle(), NULL, p_image.flipped);
+		SDL_RenderCopyEx(m_renderer, p_image.m_texture, NULL, &temp, p_image.angle(), NULL, p_image.flipped);
 	}
 	
 	// renders everything to the screen
@@ -158,8 +158,8 @@ namespace Heyo {
 		}
 		else {
 			// Get window surface
-			m_winSurface = SDL_GetWindowSurface(m_window);
-			if (m_winSurface == NULL) {
+			m_win_surface = SDL_GetWindowSurface(m_window);
+			if (m_win_surface == NULL) {
 				SDL_Log("Window Surface failed: %s", SDL_GetError());
 				return false;
 			}
@@ -189,26 +189,23 @@ namespace Heyo {
 			SDL_Log("Renderer failed to create: %s", SDL_GetError());
 			return false;
 		}
-
 		return true;
 	}
 
 	// closes everything
 	void Graphics::close() {
-		if (m_winSurface) {
-			SDL_FreeSurface(m_winSurface);
-			m_winSurface = NULL;
+		if (m_win_surface) {
+			SDL_FreeSurface(m_win_surface);
+			m_win_surface = NULL;
 		}
 		if (m_window) {
 			SDL_DestroyWindow(m_window);
 			m_window = NULL;
 		}
-
 		if (m_renderer) {
 			SDL_DestroyRenderer(m_renderer);
 			m_renderer = NULL;
 		}
-
 		if (m_texture) {
 			SDL_DestroyTexture(m_texture);
 			m_texture = NULL;

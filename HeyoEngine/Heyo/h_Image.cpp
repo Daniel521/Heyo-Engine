@@ -9,16 +9,6 @@
 
 namespace Heyo {
 
-	Image::Image(const Graphics * graphics, std::string imgAddress) : m_surface(NULL), m_texture(NULL), m_width(0), m_height(0), m_graphics(graphics), m_flippedVer(false), m_flippedHor(false), m_angle(0.0), flipped(SDL_FLIP_NONE)
-	{
-		loadImage(imgAddress);
-	}
-
-	Image::~Image()
-	{
-		clear();
-	}
-
 	void Image::clear()
 	{
 		if (m_surface != NULL) {
@@ -34,17 +24,21 @@ namespace Heyo {
 		m_rect = { 0,0,0,0 };
 	}
 
-	bool Image::loadImage(std::string imgAddress)
-	{
-		if (m_surface != NULL)
-			clear();
+	bool Image::load(const Graphics* graphics, std::string imgAddress) {
+		if (graphics == nullptr) {
+			std::cout << "Failed to load image: passed in nullptr in graphics parameter!" << std::endl;
+			return false;
+		}
+		m_graphics = graphics;
+
+		if (m_texture != NULL)	clear();
 
 		// If imgAddress == "", then load default white square texture, used for debugging mainly
 		if (imgAddress.empty() == true) {
 						// SDL_PIXELFORMAT_RGBA8888
 						// 32 bits per pixel
 			if ((m_surface = SDL_CreateRGBSurface(0, 10, 10, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000)) == NULL) {
-				std::cout << "loadedSurface Broke!" << std::endl;
+				std::cout << "Failed to load image: loadedSurface Broke!" << std::endl;
 				return false;
 			}
 
@@ -85,7 +79,7 @@ namespace Heyo {
 		}
 		else {
 			// Convert surface to screen format
-			m_surface = SDL_ConvertSurface(loadedSurface, m_graphics->m_winSurface->format, NULL);
+			m_surface = SDL_ConvertSurface(loadedSurface, m_graphics->m_win_surface->format, NULL);
 
 			// Get rid of old loaded surfaces
 			SDL_FreeSurface(loadedSurface);
@@ -112,23 +106,7 @@ namespace Heyo {
 		}
 	}
 
-	const int & Image::getWidth()
-	{
-		return m_width;
-	}
-
-	const int & Image::getHeight()
-	{
-		return m_height;
-	}
-
-	const Rect & Image::getRect()
-	{
-		return m_rect;
-	}
-
-	void Image::flipVer()
-	{
+	void Image::flipVer() {
 		if (flipped == SDL_FLIP_NONE)
 			flipped = SDL_FLIP_VERTICAL;
 		else if (flipped == SDL_FLIP_VERTICAL)
@@ -138,11 +116,10 @@ namespace Heyo {
 		else
 			flipped = SDL_FLIP_HORIZONTAL;
 
-		m_flippedVer = !m_flippedVer;
+		m_flipped_ver = !m_flipped_ver;
 	}
 
-	void Image::flipHor()
-	{
+	void Image::flipHor() {
 		if (flipped == SDL_FLIP_NONE)
 			flipped = SDL_FLIP_HORIZONTAL;
 		else if (flipped == SDL_FLIP_VERTICAL)
@@ -152,36 +129,14 @@ namespace Heyo {
 		else
 			flipped = SDL_FLIP_VERTICAL;
 
-		m_flippedHor = !m_flippedHor;
+		m_flipped_hor = !m_flipped_hor;
 	}
 
-	bool Image::isFlippedVer()
-	{
-		return m_flippedVer;
-	}
-
-	bool Image::isFlippedHor()
-	{
-		return m_flippedHor;
-	}
-
-	void Image::setAngle(double angle)
-	{
-		m_angle = angle;
-	}
-
-	double Image::getAngle()
-	{
-		return m_angle;
-	}
-
-	void Image::setColor(Uint8 red, Uint8 green, Uint8 blue)
-	{
+	void Image::setColor(Uint8 red, Uint8 green, Uint8 blue) {
 		SDL_SetTextureColorMod(m_texture, red, green, blue);
 	}
 
-	void Image::setAlpha(Uint8 alpha)
-	{
+	void Image::setAlpha(Uint8 alpha) {
 		SDL_SetTextureAlphaMod(m_texture, alpha);
 	}
 

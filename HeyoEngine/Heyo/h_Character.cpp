@@ -12,7 +12,7 @@ namespace Heyo_Platform
 
 	Character::Character()
 	{
-		sprite = new Heyo::Sprite(Heyo::Engine->graphics);
+		sprite = new Heyo::Sprite;
 		for (int i = 0; i < 4; i++)
 		{
 			spr_anim[i].min = -1;
@@ -55,8 +55,8 @@ namespace Heyo_Platform
 			delete sprite;
 			sprite = NULL;
 		}
-		sprite = new Heyo::Sprite(Heyo::Engine->graphics);
-		return sprite->loadSprite(address, indiWidth, indiHeight);
+		sprite = new Heyo::Sprite;
+		return sprite->load(Heyo::Engine->graphics, address, indiWidth, indiHeight);
 	}
 
 	void Character::moveLeft()
@@ -99,7 +99,7 @@ namespace Heyo_Platform
 			Heyo::Engine->graphics->drawRect(spr_rect, true, 255, 200, 50);
 		// Remove this after fixing default image
 		if (sprite != NULL)
-			Heyo::Engine->graphics->update(*sprite, spr_rect);
+			Heyo::Engine->graphics->draw(*sprite, spr_rect);
 	}
 
 	void Character::update()
