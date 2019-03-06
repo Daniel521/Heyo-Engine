@@ -9,8 +9,7 @@ namespace Heyo {
 	// Credit goes to that gentleman
 
 	//The application time based timer
-	class LTimer
-	{
+	class LTimer {
 	public:
 		//Initializes variables
 		LTimer();

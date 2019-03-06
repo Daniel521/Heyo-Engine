@@ -7,8 +7,6 @@
 // TODO:
 //		1. Add more more image type support, right now it's only png
 
-
-
 namespace Heyo {
 	
 	class Graphics;
@@ -27,43 +25,26 @@ namespace Heyo {
 		//	PNG = 2
 		//};
 
-	private:
-		SDL_Surface * m_surface;
-		SDL_Texture * m_texture;
-		Rect m_rect;
-		int m_width;
-		int m_height;
-
-		SDL_RendererFlip flipped;
-		bool m_flippedHor;
-		bool m_flippedVer;
-
-		double m_angle;
-
-		const Graphics * m_graphics;
-
-	private:
-		void clear();
-
 	public:
-		Image(const Graphics * graphics);
-		~Image();
-		bool loadImage(std::string imgAddress);
-		const int & getWidth();
-		const int & getHeight();
-		const Rect & getRect();
+		Image() : m_surface(nullptr), m_texture(nullptr), m_width(0), m_height(0), m_graphics(nullptr), 
+			m_flipped_ver(false), m_flipped_hor(false), m_angle(0.0), flipped(SDL_FLIP_NONE) {};
+		~Image() { clear(); }
+		bool load(const Graphics * graphics = nullptr, std::string imgAddress = "");
+		const int width() { return m_width; }
+		const int height() { return m_height; }
+		const Rect& rect() { return m_rect; }
 
 		//flipping stuff
 		void flipVer();
 		void flipHor();
 
 		//flip check
-		bool isFlippedVer();
-		bool isFlippedHor();
+		bool isFlippedVer() { return m_flipped_ver; }
+		bool isFlippedHor() { return m_flipped_hor; }
 
 		//angle stuff
-		void setAngle(double angle);
-		double getAngle();
+		void angle(double angle) { m_angle = angle; }
+		const double angle() { return m_angle; }
 
 		// Changes how percentage of a color on an image
 		void setColor(Uint8 red = 255, Uint8 green = 255, Uint8 blue = 255);
@@ -72,6 +53,25 @@ namespace Heyo {
 
 		friend class Sprite;
 		friend class Graphics;
+
+	private:
+		SDL_Surface * m_surface;
+		SDL_Texture * m_texture;
+		Rect m_rect;
+		int m_width;
+		int m_height;
+
+		SDL_RendererFlip flipped;
+		bool m_flipped_ver;
+		bool m_flipped_hor;
+
+		double m_angle;
+
+		const Graphics * m_graphics;
+
+	private:
+		void clear();
+
 	};
 
 }

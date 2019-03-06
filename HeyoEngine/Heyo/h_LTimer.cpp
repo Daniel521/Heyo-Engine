@@ -2,8 +2,7 @@
 
 namespace Heyo {
 
-	LTimer::LTimer()
-	{
+	LTimer::LTimer() {
 		//Initialize the variables
 		mStartTicks = 0;
 		mPausedTicks = 0;
@@ -12,8 +11,7 @@ namespace Heyo {
 		mStarted = false;
 	}
 
-	void LTimer::start()
-	{
+	void LTimer::start() {
 		//Start the timer
 		mStarted = true;
 
@@ -25,8 +23,7 @@ namespace Heyo {
 		mPausedTicks = 0;
 	}
 
-	void LTimer::stop()
-	{
+	void LTimer::stop() {
 		//Stop the timer
 		mStarted = false;
 
@@ -38,11 +35,9 @@ namespace Heyo {
 		mPausedTicks = 0;
 	}
 
-	void LTimer::pause()
-	{
+	void LTimer::pause() {
 		//If the timer is running and isn't already paused
-		if (mStarted && !mPaused)
-		{
+		if (mStarted && !mPaused) {
 			//Pause the timer
 			mPaused = true;
 
@@ -52,11 +47,9 @@ namespace Heyo {
 		}
 	}
 
-	void LTimer::unpause()
-	{
+	void LTimer::unpause() {
 		//If the timer is running and paused
-		if (mStarted && mPaused)
-		{
+		if (mStarted && mPaused) {
 			//Unpause the timer
 			mPaused = false;
 
@@ -68,23 +61,19 @@ namespace Heyo {
 		}
 	}
 
-	Uint32 LTimer::getTicks()
-	{
+	Uint32 LTimer::getTicks() {
 		//The actual timer time
 		time = 0;
 		seconds = 0.0f;
 
 		//If the timer is running
-		if (mStarted)
-		{
+		if (mStarted) {
 			//If the timer is paused
-			if (mPaused)
-			{
+			if (mPaused) {
 				//Return the number of ticks when the timer was paused
 				seconds = (time = mPausedTicks) / 1000.0f;
 			}
-			else
-			{
+			else {
 				//Return the current time minus the start time
 				seconds = (time = SDL_GetTicks() - mStartTicks) / 1000.0f;
 			}
@@ -93,14 +82,12 @@ namespace Heyo {
 		return time;
 	}
 
-	bool LTimer::isStarted()
-	{
+	bool LTimer::isStarted() {
 		//Timer is running and paused or unpaused
 		return mStarted;
 	}
 
-	bool LTimer::isPaused()
-	{
+	bool LTimer::isPaused() {
 		//Timer is running and paused
 		return mPaused && mStarted;
 	}

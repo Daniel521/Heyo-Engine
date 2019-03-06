@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <map>
+//#include <map>
 #include "h_Graphics.h"
 #include "h_Sprite.h"
 #include "h_Text.h"
@@ -9,15 +9,9 @@
 #include "h_Event.h"
 #include "h_LTimer.h"
 
-
-using std::string;
-
 int HeyoMain();
 
-class EngineClass 
-{
-private:
-
+class EngineClass {
 public:
 	Heyo::Graphics * graphics;
 	//std::map<std::string, Heyo::Sprite> sprites;
@@ -32,19 +26,13 @@ public:
 	~EngineClass();
 
 	bool loop();
-
-	bool init(unsigned int width, unsigned int height, std::string title);
+	bool init(unsigned int width, unsigned int height, std::string title, bool fullscreen = false);
 	void close();
-
 	//void addSprite(string title, string imgaddress, int indiWidth = -1, int indiHeight = -1);
 };
 
-namespace Heyo 
-{
-
+namespace Heyo {
 	extern EngineClass * Engine;
-
 	void closeHeyo();
-
 	bool initHeyo();
 }

@@ -7,10 +7,8 @@
 
 namespace Heyo_Platform
 {
-	class Map;
+	class Level;
 	// Classes used to make characters for a platform game, idk how to spell
-
-
 
 	class Character
 	{
@@ -20,36 +18,9 @@ namespace Heyo_Platform
 			none = 0,
 			onLeft = 1,
 			onRight = 2,
-			onTop = 3
+			onTop = 4,
+			onBottom = 8
 		};
-	public:
-
-		Heyo::Sprite * sprite;
-		// 0. idle, 1. walk, 2. jump, 3. die
-		Heyo::Range spr_anim[4];
-		// 0. idle, 1. walk, 2. jump, 3. die
-		float anim_period[4];
-		short curr_frame;
-
-		unsigned char collision;
-
-		Heyo::Rect spr_rect;
-
-		float x;
-		float y;
-		float x_speed;
-		float jump_speed;
-		float y_speed;
-		// 0. idle, 1. left, 2. right
-		unsigned char walking;
-		bool jumping;
-	
-		int ground;
-		// TEMPORARYYYYYYYYYYYYYYYYYY 1/22/18
-		Heyo::Rect sensor_rect;
-		// 0. none, 1. left, 2. right
-		int hitting;
-
 	public:
 
 		Character();
@@ -66,10 +37,17 @@ namespace Heyo_Platform
 		void update();
 
 		// Checks if it collided with a collision
-		bool checkMapCollision(Map & map);
+		bool checkMapCollision(Level& map);
+
+		bool checkCharacterCollision(Character& npc);
+
+		void setCollisonRect(Heyo::Rect coll);
+
+		bool checkCollision(CollisionLabel col);
 
 	public:
 		// Mutators and Accessors
+		void setHealth(float h) { health = h; }
 
 		// Specifies the speed from what the character
 		// jumps from.
@@ -114,7 +92,7 @@ namespace Heyo_Platform
 		float getY_Speed();
 
 	private:
-		// Function helpers these functions are used to help my other functions
+		// Function helpers, these functions are used to help my other functions
 		void jumpUpdate();
 
 		void idleAnim();
@@ -122,6 +100,38 @@ namespace Heyo_Platform
 		void jumpAnim();
 
 		void walkAnim();
+
+public:
+		Heyo::Sprite * sprite;
+		// 0. idle, 1. walk, 2. jump, 3. die
+		Heyo::Range spr_anim[4];
+		// 0. idle, 1. walk, 2. jump, 3. die
+		float anim_period[4];
+		short curr_frame;
+		float idle_time_since_last_anim;
+		float jump_time_since_last_anim;
+		float walk_time_since_last_anim;
+
+		float health;
+
+
+
+		unsigned char collision;
+
+		Heyo::Rect spr_rect;	// x in respect to the map, y is respect to top of screen
+		Heyo::Rect collision_rect;
+
+		float x;
+		float y;
+		float x_speed;
+		float jump_speed;
+		float y_speed;
+		// 0. idle, 1. left, 2. right
+		unsigned char walking;
+		bool jumping;
+
+		int ground;
+		// 0. none, 1. left, 2. right
 
 	};
 

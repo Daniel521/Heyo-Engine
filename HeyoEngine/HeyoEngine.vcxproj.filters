@@ -21,9 +21,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Heyo\h_Character.cpp">
-      <Filter>Source Files\Heyo</Filter>
-    </ClCompile>
     <ClCompile Include="Heyo\h_Event.cpp">
       <Filter>Source Files\Heyo</Filter>
     </ClCompile>
@@ -42,23 +39,26 @@
     <ClCompile Include="Heyo\h_Sound.cpp">
       <Filter>Source Files\Heyo</Filter>
     </ClCompile>
-    <ClCompile Include="Heyo\h_Sprite.cpp">
-      <Filter>Source Files\Heyo</Filter>
-    </ClCompile>
     <ClCompile Include="Heyo\h_Text.cpp">
       <Filter>Source Files\Heyo</Filter>
     </ClCompile>
-    <ClCompile Include="Heyo\h_Map.cpp">
+    <ClCompile Include="Heyo\h_Main_Character.cpp">
+      <Filter>Source Files\Heyo</Filter>
+    </ClCompile>
+    <ClCompile Include="Heyo\h_Character.cpp">
       <Filter>Source Files\Heyo</Filter>
     </ClCompile>
     <ClCompile Include="Heyo\h_Level.cpp">
       <Filter>Source Files\Heyo</Filter>
     </ClCompile>
+    <ClCompile Include="Heyo\h_Map.cpp">
+      <Filter>Source Files\Heyo</Filter>
+    </ClCompile>
+    <ClCompile Include="Heyo\h_Sprite.cpp">
+      <Filter>Source Files\Heyo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Heyo\h_Character.h">
-      <Filter>Header Files\Heyo</Filter>
-    </ClInclude>
     <ClInclude Include="Heyo\h_Event.h">
       <Filter>Header Files\Heyo</Filter>
     </ClInclude>
@@ -77,23 +77,29 @@
     <ClInclude Include="Heyo\h_Sound.h">
       <Filter>Header Files\Heyo</Filter>
     </ClInclude>
-    <ClInclude Include="Heyo\h_Sprite.h">
-      <Filter>Header Files\Heyo</Filter>
-    </ClInclude>
     <ClInclude Include="Heyo\h_Text.h">
       <Filter>Header Files\Heyo</Filter>
     </ClInclude>
     <ClInclude Include="Heyo\HeyoEngine.h">
       <Filter>Header Files\Heyo</Filter>
     </ClInclude>
-    <ClInclude Include="Heyo\h_Map.h">
+    <ClInclude Include="Heyo\h_Character.h">
       <Filter>Header Files\Heyo</Filter>
     </ClInclude>
     <ClInclude Include="Heyo\h_Level.h">
       <Filter>Header Files\Heyo</Filter>
     </ClInclude>
+    <ClInclude Include="Heyo\h_Main_Character.h">
+      <Filter>Header Files\Heyo</Filter>
+    </ClInclude>
+    <ClInclude Include="Heyo\h_Map.h">
+      <Filter>Header Files\Heyo</Filter>
+    </ClInclude>
+    <ClInclude Include="Heyo\h_Sprite.h">
+      <Filter>Header Files\Heyo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Heyo\ReadMe.txt" />
+    <None Include="Heyo\ReadMe.md" />
   </ItemGroup>
 </Project>
