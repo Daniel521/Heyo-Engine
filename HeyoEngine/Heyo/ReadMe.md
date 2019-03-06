@@ -1,6 +1,6 @@
-*Heyo Game Engine
+# Heyo Game Engine
 
-Daniel Verdugo
+by Daniel Verdugo
 
 NOV 18, 2017
 
