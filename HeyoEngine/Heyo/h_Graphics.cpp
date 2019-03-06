@@ -15,7 +15,7 @@ namespace Heyo {
 		}
 	}
 
-	Graphics::Graphics(int width, int height, std::string title) : SCREEN_WIDTH(width), SCREEN_HEIGHT(height), TITLE(title), m_window(NULL), m_win_surface(NULL), m_renderer(NULL), m_texture(NULL) {
+	Graphics::Graphics(int width, int height, std::string title, bool fullscreen) : SCREEN_WIDTH(width), SCREEN_HEIGHT(height), TITLE(title), m_window(NULL), m_win_surface(NULL), m_renderer(NULL), m_texture(NULL), m_fullscreen(fullscreen) {
 		if (!init()) {
 			SDL_Log("Failed to Initiate Heyo Engine.");
 			close();
@@ -66,6 +66,11 @@ namespace Heyo {
 	void Graphics::drawPixel(int x, int y, Uint8 red, Uint8 green, Uint8 blue) {
 		SDL_SetRenderDrawColor(m_renderer, red, green, blue, 255);
 		SDL_RenderDrawPoint(m_renderer, x, y);
+	}
+
+	void Graphics::drawPixel(Point point, Uint8 red, Uint8 green, Uint8 blue) {
+		SDL_SetRenderDrawColor(m_renderer, red, green, blue, 255);
+		SDL_RenderDrawPoint(m_renderer, point.x, point.y);
 	}
 
 
@@ -143,13 +148,14 @@ namespace Heyo {
 	bool Graphics::init() {
 		close();
 		// Make Window
+		
 		m_window = SDL_CreateWindow(
 			(char*)TITLE.c_str(),
 			SDL_WINDOWPOS_UNDEFINED,
 			SDL_WINDOWPOS_UNDEFINED,
 			SCREEN_WIDTH,
 			SCREEN_HEIGHT,
-			SDL_WindowFlags::SDL_WINDOW_SHOWN
+			m_fullscreen == true ? SDL_WindowFlags::SDL_WINDOW_FULLSCREEN: SDL_WindowFlags::SDL_WINDOW_SHOWN
 		);
 
 		if (!m_window) {

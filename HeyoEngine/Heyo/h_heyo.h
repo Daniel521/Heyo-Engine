@@ -26,7 +26,7 @@ public:
 	~EngineClass();
 
 	bool loop();
-	bool init(unsigned int width, unsigned int height, std::string title);
+	bool init(unsigned int width, unsigned int height, std::string title, bool fullscreen = false);
 	void close();
 	//void addSprite(string title, string imgaddress, int indiWidth = -1, int indiHeight = -1);
 };

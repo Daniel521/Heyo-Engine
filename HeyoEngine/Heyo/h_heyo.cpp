@@ -74,11 +74,11 @@ bool EngineClass::loop() {
 	return input->loop();
 }
 
-bool EngineClass::init(unsigned int width, unsigned int height, std::string title) {
+bool EngineClass::init(unsigned int width, unsigned int height, std::string title, bool fullscreen) {
 	if (graphics != NULL)
 		return false;
 
-	graphics = new Heyo::Graphics(width, height, title);
+	graphics = new Heyo::Graphics(width, height, title, fullscreen);
 	sound = new Heyo::SoundPlayer();
 	input = new Heyo::Events();
 	timer = new Heyo::LTimer();

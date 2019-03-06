@@ -17,15 +17,20 @@ namespace Heyo {
 	class Sprite;
 	typedef Uint32 Uint32;
 
+
 	class Graphics {
 	public:
+		enum WindowType {
+			WINDOW = SDL_WINDOW_SHOWN,
+			FULLSCREEN = SDL_WINDOW_FULLSCREEN
+		};
 		const int SCREEN_WIDTH;
 		const int SCREEN_HEIGHT;
 		const std::string TITLE;
 	public:
 		// Constructors
 		Graphics();
-		Graphics(int width, int height, std::string title);
+		Graphics(int width, int height, std::string title, bool fullscreen = false);
 		~Graphics() { close(); }
 
 		// Clears the renderer
@@ -37,6 +42,7 @@ namespace Heyo {
 		void drawRect(int w, int h, int x, int y, bool fill = true, Uint8 red = 255, Uint8 green = 255, Uint8 blue = 255);
 		//Draws a simple pixel
 		void drawPixel(int x, int y, Uint8 red = 255, Uint8 green = 255, Uint8 blue = 255);
+		void drawPixel(Point point, Uint8 red = 255, Uint8 green = 255, Uint8 blue = 255);
 		void draw(Sprite& p_sprite, int x, int y);
 		void draw(Sprite& p_sprite, Rect destin);
 		void draw(Sprite& p_sprite, Point destin); 		// be careful when using this method, won't work for characters. will fix later 10/8/18
@@ -69,6 +75,7 @@ namespace Heyo {
 		SDL_Renderer * m_renderer;
 		SDL_Texture * m_texture;
 		SDL_Surface * m_win_surface;
+		bool m_fullscreen;
 
 	};
 
