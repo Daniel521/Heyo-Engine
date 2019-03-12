@@ -94,7 +94,7 @@ namespace Heyo {
 
 	// adds text to the destination
 	void Graphics::draw(Text& p_text, Rect destin, string text, Uint8 red, Uint8 green, Uint8 blue) {
-		p_text.setText(text, { 255,blue,green,red });
+		p_text.setText(text, { blue,green,red });
 		if (SDL_RenderCopyEx(m_renderer, p_text.m_texture, NULL, &destin, p_text.getAngle(), NULL, p_text.flipped) != 0)
 			SDL_Log("Sprite did not load: %s", SDL_GetError());
 	}

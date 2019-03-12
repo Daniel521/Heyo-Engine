@@ -9,8 +9,7 @@
 
 namespace Heyo {
 
-	void Image::clear()
-	{
+	void Image::clear() {
 		if (m_surface != NULL) {
 			SDL_FreeSurface(m_surface);
 			m_surface = NULL;
@@ -35,8 +34,8 @@ namespace Heyo {
 
 		// If imgAddress == "", then load default white square texture, used for debugging mainly
 		if (imgAddress.empty() == true) {
-						// SDL_PIXELFORMAT_RGBA8888
-						// 32 bits per pixel
+			// SDL_PIXELFORMAT_RGBA8888
+			// 32 bits per pixel
 			if ((m_surface = SDL_CreateRGBSurface(0, 10, 10, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000)) == NULL) {
 				std::cout << "Failed to load image: loadedSurface Broke!" << std::endl;
 				return false;

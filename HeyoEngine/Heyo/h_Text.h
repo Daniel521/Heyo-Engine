@@ -59,7 +59,7 @@ namespace Heyo {
 		int getHeight() { return m_height; }
 		Color getColor() { return m_color; }
 		Uint8 getAlpha() { return m_alpha; }
-	
+
 
 		friend class Graphics;
 	};

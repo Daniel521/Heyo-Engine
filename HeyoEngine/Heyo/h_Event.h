@@ -6,6 +6,8 @@
 
 namespace Heyo {
 
+	using Point = SDL_Point;
+
 	class Event;
 
 	enum keys {
@@ -316,12 +318,12 @@ namespace Heyo {
 		};
 
 	public:
-		Events(): is_exit(false) {}
+		Events(): is_exit(false), m_mouse_pressed(false) {}
 		~Events();
 
 		// returns true if the quit command has been executed,
 		// else returns false to keep going
-		bool exit() { return is_exit; }
+		bool exit() const { return is_exit; }
 
 		// DO NOT CALL THIS FUNCTION UNLESS YOU KNOW WHAT YOU"RE DOING
 		// Call the loop function in Heyo::Engine instead of this one
@@ -331,6 +333,9 @@ namespace Heyo {
 
 		void clear();
 
+		const Heyo::Point& mousePos() const { return m_mouse_loc; }
+		bool mousePressed() const { return m_mouse_pressed; }
+
 		// adds a key to the list and specify what variables to tweak when the key is manipulated
 		// key : the key, use enum keys
 		// enaSwitch : ptr to bool that will turn TRUE when button is presssed
@@ -339,12 +344,14 @@ namespace Heyo {
 		bool addKey(keys key, bool * enaSwitch, bool * disSwitch = NULL);
 
 		// returns the number of keys
-		int size() { return static_cast<int>(m_keylist.size()); }
+		int size() const { return static_cast<int>(m_keylist.size()); }
 
 	private:
 		bool is_exit;
 		Event m_event;
 		std::list<Key> m_keylist;
+		Heyo::Point m_mouse_loc;
+		bool m_mouse_pressed;
 		//std::vector<int> m_enaScalelist;
 	};
 

@@ -90,6 +90,18 @@ namespace Heyo {
 			if (m_event.keyPressed() == duplicate && m_event.type() == dup_type) continue;
 			duplicate = m_event.keyPressed();
 			dup_type = m_event.type();
+			if (m_event.type() == SDL_MOUSEMOTION) {
+				SDL_GetMouseState(&m_mouse_loc.x, &m_mouse_loc.y);
+				continue;
+			}
+			if (m_event.type() == SDL_MOUSEBUTTONDOWN) {
+				m_mouse_pressed = true;
+				continue;
+			}
+			if (m_event.type() == SDL_MOUSEBUTTONUP) {
+				m_mouse_pressed = false;
+				continue;
+			}
 			for (std::list<Key>::iterator i = m_keylist.begin(); i != m_keylist.end(); i++) {
 				if (m_event.keyPressed() == i->m_key) {
 					if (m_event.type() == key_types::KEYDOWN) {

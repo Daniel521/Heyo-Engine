@@ -8,7 +8,7 @@
 //		1. Add more more image type support, right now it's only png
 
 namespace Heyo {
-	
+
 	class Graphics;
 
 	typedef SDL_Rect Rect;
@@ -26,7 +26,7 @@ namespace Heyo {
 		//};
 
 	public:
-		Image() : m_surface(nullptr), m_texture(nullptr), m_width(0), m_height(0), m_graphics(nullptr), 
+		Image() : m_surface(nullptr), m_texture(nullptr), m_width(0), m_height(0), m_graphics(nullptr),
 			m_flipped_ver(false), m_flipped_hor(false), m_angle(0.0), flipped(SDL_FLIP_NONE) {};
 		~Image() { clear(); }
 		bool load(const Graphics * graphics = nullptr, std::string imgAddress = "");
